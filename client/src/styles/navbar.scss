@@ -1,0 +1,114 @@
+@use "variables" as *;
+
+nav{
+    background-color: $orange;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    z-index: 200;
+
+    .navbar{
+        width: 100%;
+        list-style: none;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    li{
+        height: 70px;
+    }
+
+    li:first-child{
+        margin-right: auto;
+    }
+
+    a{
+        height: 100%;
+        padding: 0 30px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        color: $black;
+
+    }
+
+    .navLinkText{
+        margin-left: 5px;
+        font-size: larger;
+        font-weight: 500;
+    }
+
+    a:hover{
+        background-color: $lightOrange;
+        transition: background-color 0.2s ease;
+    }
+
+    .logo{
+        font-family: "Limelight";
+        font-size: 2em;
+    }
+}
+
+nav{
+    .sidebar{
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 250px;
+        z-index: 999;
+        background-color: $orange;
+        backdrop-filter: blur(10px);
+        box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+
+        li{
+            width: 100%;
+            list-style: none;
+        }
+
+        .sideLinkText{
+            margin-left: 5px;
+            font-size: larger;
+            font-weight: 500;
+        }
+
+        .closeSidebar{
+            text-align: right;
+        }
+    }
+
+    .sidebar.open{
+        transform: translateX(0);
+    }
+}
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+}
+
+@media(max-width: 1070px){
+    .navLinkText{
+        display: none;
+    }
+}
+
+@media(max-width: 670px){
+    .navLinkFull{
+        display: none;
+    }
+}
+
+@media(min-width: 671px){
+    .openSidebar{
+        display: none;
+    }
+}

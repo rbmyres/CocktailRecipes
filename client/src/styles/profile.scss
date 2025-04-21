@@ -1,0 +1,238 @@
+@use "variables" as *;
+
+.profileInfoContainer{
+    margin: 2em auto 2em auto;
+    padding: 2em;
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 20% 20% 20% 20% 20%;
+
+    .profileIconDiv{
+        grid-row: 1 / 6;
+        grid-column: 1 / 2;
+        position: relative;
+        margin: auto;
+        padding-right: 1em;
+
+        .profileIcon{
+            width: 180px;
+            height: 180px;
+            text-align: center;
+            border-radius: 50%;
+        }
+
+        .changeIconDiv{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            bottom: -.8em;
+            right: 43%;
+            background-color: $orange;
+            border-radius: 50%;
+
+            &:hover{
+                transition: background-color 0.2s ease;
+                background-color: $lightOrange;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .username{
+        grid-row: 1 / 2;
+        grid-column: 2 / 4;
+        font-size: 1.4em;
+        font-weight: 550;
+        color: $black;
+    }
+
+    .fullName{
+        grid-row: 1 / 2;
+        grid-column: 3 / 6;
+        font-size: 1.4em;
+        font-weight: 550;
+        color: $black;
+    }
+
+    .postsNum{
+        grid-row: 3 / 4;
+        grid-column: 2 / 4;
+        color: $black;
+        padding-left: .5em;
+    }
+
+    .followersNum{
+        grid-row: 3 / 4;
+        grid-column: 3 / 5;
+        color: $black;
+
+        &:hover{
+            color: $blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
+    .followingNum{
+        grid-row: 3 / 4;
+        grid-column: 4 / 6;
+        color: $black;
+
+        &:hover{
+            color: $blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
+    .spanNum{
+        font-size: 1.5em;
+        font-weight: 650;
+    }
+
+    .spanWord{
+        font-size: 1em;
+        font-weight: 550;
+    }
+
+    .settingsButtonDiv{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 45px;
+        width: 45px;
+        grid-row: 5 / 6;
+        grid-column: 5 / 6;
+        text-align: right;
+        background-color: $orange;
+        border-radius: 50%;
+
+        &:hover{
+            transition: background-color 0.2s ease;
+            background-color: $lightOrange;
+            cursor: pointer;
+        }
+    }
+
+    .followButtonDiv{
+        grid-row: 5 / 6;
+        grid-column: 3 / 6;
+
+        .followButton{
+            border: none;
+            background-color: $orange;
+            border-radius: 4px;
+            font-size: 1.4em;
+            font-weight: 550;
+            padding: .4em .6em .4em .6em;
+            width: 120px;
+            transition: background-color 0.2s ease;
+
+            &:hover{
+                background-color: $lightOrange;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.bottomLine{
+    margin: auto;
+    width: 90%;
+    height: 1px;
+    background-color: $black;
+}
+
+@media(max-width: 600px){
+    .profileInfoContainer{
+        padding: 2em .2em 0 .2em;
+        max-width: 400px;
+
+
+        .profileIconDiv{
+
+            .changeIconDiv{
+                width: 30px;
+                height: 30px;
+                bottom: -.5em;
+    
+                .pencilIcon{
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            .profileIcon{
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        .profileIconDiv{
+            grid-row: 2 / 7;
+        }
+
+        .username{
+            grid-column: 1 / 2;
+            padding-left: .4em;
+        }
+
+        .fullName{
+            display: none;
+        }
+
+        .postsNum{
+            grid-row: 2 / 2;
+            grid-column: 2 / 3;
+            padding: .5em 0 .5em 0;
+        }
+
+        .followersNum{
+            grid-row: 3 / 3;
+            grid-column: 2 / 3;
+            padding: .5em 0 .5em 0;
+        }
+
+        .followingNum{
+            grid-row: 4 / 4;
+            grid-column: 2 / 3;
+            padding: .5em 0 .5em 0;
+        }
+
+        .spanNum{
+            font-size: 1.2em;
+        }
+        
+        .spanWord{
+            font-size: .8em;
+        }
+
+        .settingsButtonDiv{
+            width: 35px;
+            height: 35px;
+            grid-row: 3 / 3;
+            grid-column: 3 / 6;
+            margin: auto;
+            .settingsIcon{
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        .followButtonDiv{
+            grid-row: 3 / 3;
+            grid-column: 3 / 6;
+            margin: auto;
+
+            .followButton{
+                font-size: 1.2em;
+                width: 90px;
+                padding: .3em .5em .3em .5em;
+            }
+        }
+    }
+}

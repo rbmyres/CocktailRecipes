@@ -1,0 +1,24 @@
+@use "variables";
+
+@use "navbar";
+@use "signup";
+@use "login";
+@use "profile";
+@use "iconUpload";
+@use "modal";
+@use "profileList";
+@use "settings";
+@use "editAccount";
+@use "changePassword";
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+  
+body{
+    min-height: 100vh;
+    font-family: "Roboto";
+    background-color: #f7ece1;
+}

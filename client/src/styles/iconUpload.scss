@@ -1,0 +1,61 @@
+@use "variables" as *;
+
+
+.iconUploadContainer{
+    display: flex;
+    flex-direction: column;             
+    justify-content: center;
+    align-items: center;     
+    gap: 1em;
+}
+
+.iconUploadInput{
+    font-family: "Roboto";
+    background: transparent;
+    border: none;
+    font-size: 1em;
+
+    &::-webkit-file-upload-button{
+        padding: .6em;
+        background-color: $orange;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover{
+            background-color: $lightOrange;
+        }
+    }
+
+}
+
+.iconUploadButton{
+    font-family: "Roboto";
+    font-size: 1em;
+    padding: .6em;
+    margin-bottom: 1em;
+    background-color: $orange;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover{
+        background-color: $lightOrange;
+    }
+}
+
+.iconCropperContainer{
+    align-self: center;
+}
+
+@media(max-width: 410px){
+    .iconUploadInput{
+        align-self: flex-start;
+        margin-left: 1em;
+    }
+    .iconCropperContainer{
+        width: 90%;
+    }
+}

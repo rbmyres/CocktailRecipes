@@ -1,0 +1,151 @@
+const express = require('express');
+const verifyJWT = require('../middleware/verifyJWT');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+const router = express.Router();
+
+router.get('/id/:user_name', (req, res) => {
+    const user_name = req.params.user_name;
+    const db = req.db;
+
+    db.query(
+        "SELECT user_id FROM users WHERE user_name = ?",
+        [user_name],
+        (err, result) => {
+            if (err) res.status(500).send({ message: "Error finding user id"});
+
+            if (result.length === 0) res.status(500).send({ error: "User not found"});
+
+            return res.json(result[0]);
+        }
+    )
+})
+
+router.get('/edit/info', verifyJWT, (req, res) => {
+    const user_id = req.user.id;
+    const db = req.db;
+
+    db.query(
+        "SELECT first_name, last_name, user_name, user_email, private FROM users WHERE user_id = ?",
+        [user_id],
+        (err, result) => {
+            if (err) res.status(500).send({ message: "Error retrieving user info"});
+
+            return res.json(result[0]);
+        }
+    );
+});
+
+router.put('/submit/changes', verifyJWT, (req, res) => {
+    const user_id = req.user.id;
+    const { first_name, last_name, user_email, user_name, private} = req.body;
+    const db = req.db;
+
+    db.query(
+        "SELECT user_name, user_email FROM users WHERE (user_name = ? OR user_email = ?) AND user_id != ? LIMIT 1",
+        [user_name, user_email, user_id],
+        (err, result) => {
+            if(err){
+                return res.status(500).send({message: "Error checking username/email"})
+            }
+            if(result.length > 0){
+                const conflict = result[0];
+                if (conflict.user_name === user_name){
+                    return res.status(409).send({message: "Username already in use"}) 
+                }
+                if (conflict.user_email === user_email){
+                    return res.status(409).send({message: "Email already in use"}) 
+                }
+            }
+            db.query(
+                "UPDATE users SET first_name = ?, last_name = ?, user_name = ?, user_email = ?, private = ? WHERE user_id = ?",
+                [first_name, last_name, user_name, user_email, private? 1 : 0, user_id],
+                (err, result) => {
+                    if (err) {
+                        return res.status(500).send({ message: "Error updating user info"})
+                    }
+                    return res.json({ message: "User info updated successfully"});
+                }
+            );
+        }
+    );
+});
+
+router.put('/change/password', verifyJWT, (req, res) => {
+    const user_id = req.user.id;
+    const { current_password, new_password } = req.body;
+    const db = req.db;
+
+    db.query(
+        "SELECT user_password FROM users WHERE user_id = ?",
+        [user_id],
+        (err, result) => {
+            if (err) {
+                return res.status(500).send({ message: "Error retrieving user password"});
+            }
+            if (result.length === 0) {
+                return res.status(404).send({ message: "User not found"});
+            }
+
+            const hashedPassword = result[0].user_password;
+
+            bcrypt.compare(current_password, hashedPassword, (err, isMatch) => {
+                if (err) {
+                    return res.status(500).send({ message: "Error comparing passwords" });
+                }
+                if (!isMatch) {
+                    return res.status(401).send({ message: "Current password is incorrect" });
+                }
+
+                bcrypt.hash(new_password, saltRounds, (err, hash) => {
+                    if (err) {
+                        return res.status(500).send({ message: "Error hashing new password"});
+                    }
+                    newHash = hash;
+
+                    db.query(
+                        "UPDATE users SET user_password = ? WHERE user_id = ?",
+                        [newHash, user_id],
+                        (err, result) => {
+                            if (err) {
+                                return res.status(500).send({ message: "Error updating password"});
+                            }
+                            return res.json({ message: "Password updated successfully"});
+                        }
+                    );
+                });
+            });
+        }
+    );
+});
+
+router.get('/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
+    const db = req.db;
+
+    db.query(
+        "SELECT user_id, user_name, first_name, last_name, user_icon, post_count, follower_count, following_count FROM users WHERE user_id = ?",
+        [user_id],
+        (err, result) => {
+            if (err){
+                return res.status(500).json({ message: "Server error"});
+            }
+            if (result.length === 0) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            const user = result[0];
+            return res.json({
+                user_id: user.user_id,
+                user_name: user.user_name,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                user_icon: user.user_icon,
+                post_count: user.post_count,
+                follower_count: user.follower_count,
+                following_count: user.following_count
+            })
+        }
+    )
+});
+module.exports = router;

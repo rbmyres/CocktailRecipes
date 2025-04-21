@@ -1,0 +1,64 @@
+@use "variables" as *;
+
+
+.modalContainer{
+    background-color: $champagne;
+    height: 75%;
+    width: 75%;
+    max-width: 800px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 101;
+    border-radius: 8px;
+    overflow: auto;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+.smallModalContainer{
+    background-color: $champagne;
+    height: fit-content;
+    width: 75%;
+    max-width: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 101;
+    border-radius: 8px;
+    overflow: auto;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+.closeModalButton{
+    text-align: right;
+}
+
+.closeModalIcon{
+    transition: transform .3s ease-in-out;
+}
+
+.closeModalIcon:hover{
+    cursor: pointer;
+    transform: scale(1.15);
+}
+
+
+.modalOverlay{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $black;
+    opacity: .5;
+    z-index: 100;
+
+}

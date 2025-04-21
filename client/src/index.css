@@ -1,0 +1,13 @@
+.navbar{
+    list-style: none;
+    text-align: center;
+}
+
+.navbar li{
+    display: inline;
+    margin: 2em;
+}
+
+h1{
+    text-align: center;
+}

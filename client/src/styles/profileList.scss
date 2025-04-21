@@ -1,0 +1,98 @@
+@use "variables" as *;
+
+.profileListContainer{
+    background-color: $champagne;
+    height: 75%;
+    width: 75%;
+    max-width: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 101;
+    border-radius: 8px;
+    overflow: auto;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+
+    .profileListHeader{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        position: relative;
+
+        .profileListTitle{
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+            font-size: 1.6em;
+        }
+
+        .closeProfileListButton{
+            margin-left: auto;
+            color: $lightOrange;
+
+            .closeProfileListIcon{
+                transition: transform .3s ease-in-out;
+                color: $lightOrange;
+
+                &:hover{
+                    cursor: pointer;
+                    transform: scale(1.15);
+                }
+            }
+        }
+    }
+
+    .profileList{
+
+        .noUsersAlert{
+            font-size: 1.6em;
+            font-weight: 450;
+            width: 100%;
+            text-align: center;
+            margin-top: 2em;
+        }
+
+        .listItem{
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            border-bottom: 1px solid $black;
+    
+            .profileListIcon{
+                border-radius: 50%;
+                width: 70px;
+                height: 70px;
+                margin: .4em 2em .4em 1em;
+            }
+    
+            .profileListName{
+                font-size: 1.2em;
+                font-weight: 450;
+                color: $blue;
+            }
+        }
+    }
+
+    .lineBetween{
+        width: 100%;
+        height: 1px;
+        background-color: $black;
+    }
+}
+
+.profileListOverlay{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $black;
+    opacity: .5;
+    z-index: 100;
+}
