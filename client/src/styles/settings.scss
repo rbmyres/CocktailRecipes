@@ -12,23 +12,6 @@
         display: none;
     }
 
-    .accountPrivacyButton{
-        border: none;
-        border-radius: 8px;
-        font-size: 1.4em;
-        font-weight: 550;
-        padding: .8em;
-        background-color: $orange;
-        margin: 1em 0 1em 0;
-        width: 220px;
-
-        &:hover{
-            transition: background-color 0.2s ease;
-            cursor: pointer;
-            background-color: $lightOrange;
-        }
-    }
-
     .editAccountButton{
         border: none;
         border-radius: 8px;
@@ -38,6 +21,7 @@
         background-color: $orange;
         margin: 1em 0 1em 0;
         width: 220px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
 
         &:hover{
             transition: background-color 0.2s ease;
@@ -55,6 +39,7 @@
         background-color: $orange;
         margin: 1em 0 1em 0;
         width: 220px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
 
         &:hover{
             transition: background-color 0.2s ease;
@@ -72,6 +57,7 @@
         background-color: $orange;
         margin: 1em 0 1em 0;
         width: 220px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
 
         &:hover{
             transition: background-color 0.2s ease;

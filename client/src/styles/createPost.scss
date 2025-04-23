@@ -1,0 +1,212 @@
+@use "variables" as *;
+
+.createPost{
+    background-color: $champagne;
+    width: 80%;
+    max-width: 500px;
+    margin: 2em auto auto auto;
+    padding: 2em;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+
+    form{
+        display: flex;
+        flex-direction: column;
+
+        h3{
+            margin-bottom: .4em;
+        }
+
+        .topContainer{
+            display: flex;
+            gap: 2em;
+            margin-bottom: 2em;
+
+            input{
+                flex: 1;
+                padding: .6em;
+                font-size: 1em;
+            }
+
+            select{
+                padding: .6em;
+                font-size: 1em;
+                border: 1px solid $black;
+                border-radius: 4px;
+                margin-bottom: 1.2em;
+                cursor: pointer;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+                &:focus{
+                    outline: none;
+                    border-color: $orange;
+                    box-shadow: 0 0 5px $lightOrange;
+                }
+            }
+        }
+
+        .ingredientRow{
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: .8em;
+
+            .ingredientInput{
+                width: 62%;
+                margin: 0;
+            }
+
+            .amountInput{
+                width: 22%;
+                margin: 0;
+            }
+        }
+
+        .directionRow{
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            margin-bottom: .8em;
+
+            span{
+                font-size: 1.5em;
+                font-weight: 500;
+            }
+            .directionInput{
+                flex: 1;
+                margin: 0;
+            }
+        }
+
+        .buttonContainer{
+            display: flex;
+            justify-content: left;
+            gap: 1em;
+            margin-bottom: 3em;
+
+            button{
+                width: 36px;
+                height: 36px;
+                padding: 0;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 0;
+            }
+        }
+
+        input{
+            padding: .6em;
+            font-size: 1em;
+            border: 1px solid $black;
+            border-radius: 4px;
+            margin-bottom: 1.2em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+
+            &:focus{
+                outline: none;
+                border-color: $orange;
+                box-shadow: 0 0 5px $lightOrange;
+            }
+        }
+
+        .bottomContainer{
+            display: flex;
+            align-items: center;
+
+            button{
+                margin: 0 auto 0 auto;
+                padding: .6em .8em .6em .8em;
+                font-size: 1.1em;
+                border-radius: 4px;
+                font-weight: 500;
+            }
+
+            select{
+                margin: 0 auto 0 auto;
+                padding: .6em;
+                font-size: 1em;
+                border: 1px solid $black;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+                &:focus{
+                    outline: none;
+                    border-color: $orange;
+                    box-shadow: 0 0 5px $lightOrange;
+                }
+            }
+        }
+
+        button{
+            padding: .8em;
+            font-size: 24px;
+            font-weight: 550;
+            background-color: $orange;
+            border: none;
+            border-radius: 8px;
+            color: $black;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: .5em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+
+            &:hover{
+                background-color: $lightOrange;
+            }
+        }
+
+        .previewButton{
+            margin: 2em auto auto auto;
+            width: 60%;
+            font-size: 1.4em;
+            font-weight: 450;
+        }
+
+        .errorMessage{
+            font-size: 1.1em;
+            margin: 2em auto auto auto;
+            text-align: center;
+        }
+
+
+    }
+}
+
+@media(max-width: 480px){
+
+    .createPost{
+        form{
+            .topContainer{
+                flex-direction: column;
+                width: 80%;
+                gap: .5em;
+                
+                .titleInput{
+                    margin-bottom: 1em;
+                }
+            }
+
+            .ingredientRow{
+                flex-direction: column;
+                gap: 1em;
+                
+                .ingredientInput{
+                    width: 100%;
+                }
+
+                .amountInput{
+                    width: 40%;
+                }
+            }
+        
+            .bottomContainer{
+                button{
+                    font-size: 1em;
+                }
+            }
+        }
+    }
+}

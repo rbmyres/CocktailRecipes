@@ -10,6 +10,9 @@
 @use "settings";
 @use "editAccount";
 @use "changePassword";
+@use "createPost";
+@use "postPreview";
+@use "home";
 
 *{
     margin: 0;

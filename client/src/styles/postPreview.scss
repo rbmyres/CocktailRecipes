@@ -1,0 +1,40 @@
+@use "variables" as *;
+
+.feed{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: space-evenly;
+    padding: 1em;
+
+    .previewContainer{
+        background-color: $champagne;
+        max-width: 320px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    
+        .previewHeader{
+    
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            border-bottom: 1px solid $black;
+    
+            .previewUserIcon{
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                margin: .4em 2em .4em 1em;
+            }
+    
+            .previewUserName{
+                font-size: 1.2em;
+                font-weight: 450;
+                color: $blue;
+            }
+        }
+    }
+}
+
+    
+

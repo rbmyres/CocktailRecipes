@@ -27,6 +27,7 @@ const userRoutes = require('./routes/userRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const followRoutes = require('./routes/followRoutes');
 const likeRoutes = require('./routes/likeRoutes');
+const postRoutes = require('./routes/postRoutes');
 
 app.use((req, res, next) => {
     req.db = db;
@@ -39,6 +40,7 @@ app.use('/user', userRoutes);
 app.use('/upload', uploadRoutes);
 app.use('/follow', followRoutes);
 app.use('/like', likeRoutes);
+app.use('/post', postRoutes);
 
 app.listen(8080, () => {
     console.log("Server started on port 8080");

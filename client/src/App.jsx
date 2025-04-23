@@ -3,6 +3,7 @@ import 'react-image-crop/src/ReactCrop.scss'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Home from "./Pages/Home";
+import FullPost from "./Pages/FullPost";
 import CreatePost from "./Pages/CreatePost";
 import Search from "./Pages/Search";
 import Profile from "./Pages/Profile";
@@ -23,7 +24,8 @@ function App(){
         <Route path="/search" element={<Search />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/post" element={<CreatePost />} />
+          <Route path="/post/:recipe_id" element={<FullPost />}/>
+          <Route path="/create" element={<CreatePost />} />
           <Route path="/profile/:user_name?" element={<Profile />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/notifications" element={<Notifications />} />

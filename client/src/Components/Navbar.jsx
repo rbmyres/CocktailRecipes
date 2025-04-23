@@ -17,7 +17,7 @@ function Navbar() {
 
     const profileLink = authorized ? `/profile/${authorized.user_name}` : "/login";
     const reportsLink = authorized ? "/reports" : "/login";
-    const postLink = authorized ? "/post" : "/login";
+    const postLink = authorized ? "/create" : "/login";
     const notificationsLink = authorized ? "/notifications" : "login"
 
 

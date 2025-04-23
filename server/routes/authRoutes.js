@@ -100,7 +100,7 @@ router.get("/auth", verifyJWT, (req, res) => {
     const user_id = req.user.id;
 
     db.query(
-        "SELECT user_name, is_admin FROM users WHERE user_id = ?;",
+        "SELECT user_name, user_icon, is_admin FROM users WHERE user_id = ?;",
         [user_id],
         (err, result) => {
             if (err) {
@@ -118,6 +118,7 @@ router.get("/auth", verifyJWT, (req, res) => {
                 user: {
                     user_id,
                     user_name: user.user_name,
+                    user_icon: user.user_icon,
                     is_admin: user.is_admin
                 }
             });

@@ -12,7 +12,7 @@ h1{
     margin: 2em auto auto auto;
     padding: 2em;
     border-radius: 4px;
-    box-shadow: 12px 14px 12px rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
 
     form{
         display: flex;
@@ -51,6 +51,7 @@ h1{
             cursor: pointer;
             transition: background-color 0.2s ease;
             margin-top: .5em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
 
             &:hover{
                 background-color: $lightOrange;
