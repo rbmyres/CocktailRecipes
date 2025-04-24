@@ -13,15 +13,16 @@
 @use "createPost";
 @use "postPreview";
 @use "home";
+@use "report";
 
 *{
     margin: 0;
     padding: 0;
 }
-
+ 
   
 body{
     min-height: 100vh;
     font-family: "Roboto";
-    background-color: #f7ece1;
+    background-color: #F7ECE1;
 }

@@ -6,7 +6,9 @@ function Home() {
     const API_URL = import.meta.env.VITE_API_URL;
 
     return (
-        <Posts />
+        <Posts 
+            post_type={"Public"}
+        />
 
     )
 }

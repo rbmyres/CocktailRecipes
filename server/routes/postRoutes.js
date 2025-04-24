@@ -1,15 +1,8 @@
 const express = require('express');
 const verifyJWT = require('../middleware/verifyJWT');
+const optionalJWT = require('../middleware/optionalJWT');
+const query = require('../utils/query');
 const router  = express.Router();
-
-function query(db, sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.query(sql, params, (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
-    });
-  });
-}
 
 router.post('/create', verifyJWT, async (req, res) => {
   const db = req.db;
@@ -101,36 +94,159 @@ router.post('/create', verifyJWT, async (req, res) => {
   }
 });
 
-router.get('/small', async (req, res) => {
+router.put('/:recipe_id', verifyJWT, async (req, res) => {
   const db = req.db;
-  try{
-    const posts = await query(
-      db,
-        `SELECT r.recipe_id, r.recipe_title, r.recipe_image, r.like_count, r.post_time, r.primary_spirit, r.post_type, u.user_name, u.user_icon
-        FROM recipe r
-        JOIN users u
-        ON r.user_id = u.user_id
-        ORDER BY r.post_time DESC`
-    );
-    res.json(posts);
+  const user_id = req.user_id;
+  const recipe_id = req.params.recipe_id;
+
+  const {title, primarySpirit, postType, ingredients, directions, imageURL } = req.body;
+
+  if (
+    !title?.trim() ||
+    !primarySpirit ||
+    !postType ||
+    !imageURL ||
+    !Array.isArray(ingredients) || ingredients.length === 0 ||
+    !Array.isArray(directions)  || directions.length === 0
+  ) {
+    return res.status(400).json({ error: 'Missing required fields' })
   }
-  catch (err){
-    console.error(err);
-    res.status(500).json({ error: "Fetch posts error"});
+
+  try {
+    await query(
+      db,
+      `UPDATE recipe
+         SET recipe_title   = ?,
+             post_type      = ?,
+             primary_spirit = ?,
+             recipe_image   = ?
+       WHERE recipe_id = ?`,
+      [title.trim(), postType, primarySpirit, imageURL, recipe_id]
+    )
+
+    await query(
+      db,
+      `DELETE FROM direction WHERE recipe_id = ?`,
+      [recipe_id]
+    )
+    for (let raw of directions) {
+      const dir = raw.trim()
+      if (!dir) continue
+
+      await query(
+        db,
+        `INSERT INTO direction
+           (recipe_id, direction_description)
+         VALUES (?, ?)`,
+        [recipe_id, dir]
+      )
+    }
+
+    await query(
+      db,
+      `DELETE FROM recipe_ingredient WHERE recipe_id = ?`,
+      [recipe_id]
+    )
+    for (let { desc: rawDesc, amt: rawAmt } of ingredients) {
+      const desc = rawDesc.trim()
+      const amt  = rawAmt.trim()
+      if (!desc || !amt) continue
+
+      const rows = await query(
+        db,
+        `SELECT ingredient_id
+           FROM ingredient
+          WHERE ingredient_description = ?`,
+        [desc]
+      )
+
+      let ingredient_id
+      if (rows.length) {
+        ingredient_id = rows[0].ingredient_id
+      } else {
+        const insertIng = await query(
+          db,
+          `INSERT INTO ingredient (ingredient_description)
+           VALUES (?)`,
+          [desc]
+        )
+        ingredient_id = insertIng.insertId
+      }
+
+      await query(
+        db,
+        `INSERT INTO recipe_ingredient
+           (recipe_id, ingredient_id, ingredient_amount)
+         VALUES (?, ?, ?)`,
+        [recipe_id, ingredient_id, amt]
+      )
+    }
+
+    res.json({ success: true, recipe_id })
+  } catch (err) {
+    console.error('Error updating recipe:', err)
+    res.status(500).json({ error: 'Could not update recipe' })
+  }
+
+})
+
+router.get('/small', optionalJWT, async (req, res) => {
+  const db = req.db
+  const currentUserId= req.user?.id;
+  const { user_id, post_type, primary_spirit } = req.query
+
+  const params = [];
+  const filters = [];
+
+  let sql = `
+    SELECT r.recipe_id, r.recipe_title, r.recipe_image, r.like_count, r.post_time, r.primary_spirit, r.post_type, u.user_name, u.user_icon, u.user_id AS owner_id`
+
+  if (currentUserId) {
+    sql += `, CASE WHEN l.like_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_liked`;
+  } else {
+    sql += `, FALSE AS is_liked`; 
+  }
+  
+  sql += `
+    FROM recipe r
+    JOIN users u ON r.user_id = u.user_id
+  `;
+  
+  if (currentUserId) {
+    sql += `LEFT JOIN likes l ON r.recipe_id = l.recipe_id AND l.user_id = ?`;
+    params.push(currentUserId);
+  }
+
+  if (user_id)        filters.push('r.user_id = ?') && params.push(user_id)
+  if (post_type)      filters.push('r.post_type = ?') && params.push(post_type)
+  if (primary_spirit) filters.push('r.primary_spirit = ?') && params.push(primary_spirit)
+
+  if (filters.length) {
+    sql += ' WHERE ' + filters.join(' AND ')
+  }
+
+  sql += ' GROUP BY r.recipe_id ORDER BY r.post_time DESC'
+
+  try {
+    const posts = await query(db, sql, params)
+    res.json(posts)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Could not load posts' })
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:recipe_id', async (req, res) => {
   const db = req.db;
-  const { id } = req.params;
+  const { recipe_id } = req.params;
 
   try{
     const [recipe] = await query(db,
-        `SELECT r.recipe_id, r.recipe_title, r.primary_spirit, r.post_type, r.recipe_image, r.like_count, r.post_time, u.user_name, u.user_icon
+        `SELECT r.recipe_id, r.recipe_title, r.primary_spirit, r.post_type, r.recipe_image, r.like_count, r.post_time, u.user_name, u.user_icon, u.user_id AS owner_id
         FROM recipe r
         NATURAL JOIN users u
         WHERE recipe_id = ?`,
-        [id]
+        [recipe_id]
       );
 
       if (!recipe) {
@@ -141,7 +257,7 @@ router.get('/:id', async (req, res) => {
         `SELECT direction_description as dir
         FROM direction
         WHERE recipe_id = ?`,
-        [id]
+        [recipe_id]
       );
 
       const ingredients = await query(db, 
@@ -150,7 +266,7 @@ router.get('/:id', async (req, res) => {
         JOIN ingredient i
         ON ri.ingredient_id = i.ingredient_id
         WHERE ri.recipe_id = ?`,
-        [id]
+        [recipe_id]
       );
 
       res.json({
@@ -161,8 +277,10 @@ router.get('/:id', async (req, res) => {
         recipe_image: recipe.recipe_image,
         like_count: recipe.like_count,
         post_time: recipe.post_time,
+        owner_id: recipe.owner_id,
         user_name: recipe.user_name,
         user_icon: recipe.user_icon,
+        is_liked: recipe.is_liked,
         directions: directions.map(i => i.dir), 
         ingredients: ingredients.map(i => ({desc: i.ing, amt: i.amt}))});
 

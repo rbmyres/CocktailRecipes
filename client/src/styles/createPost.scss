@@ -1,7 +1,7 @@
 @use "variables" as *;
 
 .createPost{
-    background-color: $champagne;
+    background-color: $softWhite;
     width: 80%;
     max-width: 500px;
     margin: 2em auto auto auto;
@@ -31,7 +31,7 @@
             select{
                 padding: .6em;
                 font-size: 1em;
-                border: 1px solid $black;
+                border: 1px solid $darkgray;
                 border-radius: 4px;
                 margin-bottom: 1.2em;
                 cursor: pointer;
@@ -39,8 +39,8 @@
 
                 &:focus{
                     outline: none;
-                    border-color: $orange;
-                    box-shadow: 0 0 5px $lightOrange;
+                    border-color: $darkOrange;
+                    box-shadow: 0 0 5px $orange;
                 }
             }
         }
@@ -98,7 +98,7 @@
         input{
             padding: .6em;
             font-size: 1em;
-            border: 1px solid $black;
+            border: 1px solid $darkgray;
             border-radius: 4px;
             margin-bottom: 1.2em;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -106,8 +106,8 @@
 
             &:focus{
                 outline: none;
-                border-color: $orange;
-                box-shadow: 0 0 5px $lightOrange;
+                border-color: $darkOrange;
+                box-shadow: 0 0 5px $orange;
             }
         }
 
@@ -127,15 +127,15 @@
                 margin: 0 auto 0 auto;
                 padding: .6em;
                 font-size: 1em;
-                border: 1px solid $black;
+                border: 1px solid $darkgray;
                 border-radius: 4px;
                 cursor: pointer;
                 transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
                 &:focus{
                     outline: none;
-                    border-color: $orange;
-                    box-shadow: 0 0 5px $lightOrange;
+                    border-color: $darkOrange;
+                    box-shadow: 0 0 5px $orange;
                 }
             }
         }
@@ -147,14 +147,14 @@
             background-color: $orange;
             border: none;
             border-radius: 8px;
-            color: $black;
+            color: $darkgray;
             cursor: pointer;
             transition: background-color 0.2s ease;
             margin-top: .5em;
             box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
 
             &:hover{
-                background-color: $lightOrange;
+                background-color: $darkOrange;
             }
         }
 
@@ -173,6 +173,29 @@
 
 
     }
+}
+
+.submitPostButton{
+    display: flex;
+    justify-content: center;
+    margin: .8em auto auto auto;
+    padding: .5em;
+    font-size: 24px;
+    font-weight: 550;
+    background-color: $orange;
+    border: none;
+    border-radius: 8px;
+    color: $darkgray;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+
+    &:hover{
+        background-color: $darkOrange;
+    }
+
+
+    
 }
 
 @media(max-width: 480px){

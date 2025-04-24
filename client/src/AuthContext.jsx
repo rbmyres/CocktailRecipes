@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
         try {
             await axios.post(`${API_URL}/auth/login`, credentials, { withCredentials: true });
             await checkAuth(); 
-            console.log("Log in successful");
         } catch (error) {
             console.error("Login failed", error);
             throw error;

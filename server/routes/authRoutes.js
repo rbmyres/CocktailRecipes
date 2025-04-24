@@ -75,7 +75,7 @@ router.post("/login", (req, res) => {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                         sameSite: "Strict",
-                        maxAge: 3600000,
+                        maxAge: 86400000,
                     });
 
                     return res.json({ auth: true, message: "Login successful", user: result[0]});

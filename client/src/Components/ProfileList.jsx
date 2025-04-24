@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function ProfileList({open, type, userID, onClose}) {
+function ProfileList({open, type, userID, onClose, recipe_id}) {
   const API_URL = import.meta.env.VITE_API_URL;
   const [users, setUsers] = useState([]);
 
@@ -18,9 +18,9 @@ function ProfileList({open, type, userID, onClose}) {
     else if(type === "Following"){
       endpoint = `/follow/following/${userID}`;
     }
-    // else if(type === "Likes"){
-    //   endpoint = `/like/${userID}`;
-    // }
+    else if(type === "Likes"){
+      endpoint = `/like/list/${recipe_id}`;
+    }
 
     axios.get(`${API_URL}${endpoint}`)
       .then(res => {
@@ -29,7 +29,7 @@ function ProfileList({open, type, userID, onClose}) {
       .catch(err => {
         console.error(err)
       })
-  }, [userID, type, open]);
+  }, [recipe_id, userID, type, open]);
 
   if (!open) return null;
 

@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { LikeButton } from './LikeButton';
+import { ReportButton } from './ReportButton';
+import { FaPencilAlt } from "react-icons/fa";
 
-function PostPreview({title, user_name, user_icon, recipe_image, like_count}) {
+function PostPreview({recipe_title, user_name, user_icon, recipe_image, like_count}) {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,17 +13,18 @@ function PostPreview({title, user_name, user_icon, recipe_image, like_count}) {
 
           <div className='previewHeader'>
             <img className="previewUserIcon" src={`${API_URL}${user_icon}`} alt={`${user_name}'s icon`} width={128} height={128}/>
-            <Link className='previewUserName'to={`/profile/${user_name}`}>{user_name}</Link>
+            <div className='previewUserName'>{user_name}</div>
           </div>
 
           <div className='previewBody'>
-            <h3 className='previewTitle'>{title}</h3>
-            <img className="previewImgae" src={`${API_URL}${recipe_image}`} alt={`image of ${title}`} />
+            <img className="previewImage" src={`${API_URL}${recipe_image}`} alt={`image of ${recipe_title}`} />
+            <h3 className='previewTitle'>{recipe_title}</h3>
           </div>
 
           <div className='previewFooter'>
-            <div className='likeIcon'>{like_count}</div>
-            <div className='reportIcon'>Report</div>
+            <LikeButton />
+            <ReportButton />
+            <button className='editIcon'><FaPencilAlt /></button>
           </div>
 
         </div>

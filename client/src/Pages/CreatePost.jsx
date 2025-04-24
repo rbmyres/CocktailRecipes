@@ -161,7 +161,7 @@ function CreatePost(){
                 primary_spirit={primarySpirit}
                 like_count={0}
             />
-            <button type="button" className="submitButton"onClick={handleSubmit}> Post</button>
+            <button type="button" className="submitPostButton"onClick={handleSubmit}>Post</button>
             </Modal>
         </div>
     )

@@ -17,15 +17,15 @@ export default function FileUpload({ onUpload }){
 
     const onSelectFile = (e) => {
         setButtonOpen(false);
-        const file = e.target.files[0];
-        if (!file) return;
+        const iconFile = e.target.files[0];
+        if (!iconFile) return;
 
         const reader = new FileReader();
         reader.onload = () => {
             const iconURL = reader.result;
             setIconSrc(iconURL);
         }
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(iconFile);
     }
 
     const onIconLoad = (e) => {
@@ -46,10 +46,10 @@ export default function FileUpload({ onUpload }){
         const pixelCrop = convertToPixelCrop(crop, iconRef.current.width, iconRef.current.height );
 
         try{
-            const file = await getCroppedImage(iconRef.current, canvasRef.current, pixelCrop);
+            const iconFile = await getCroppedImage(iconRef.current, canvasRef.current, pixelCrop, "user_icon.png");
         
             const formData = new FormData();
-            formData.append("icon", file);
+            formData.append("user_icon", iconFile);
             const { data } = await axios.post(`${API_URL}/upload/icon`, formData, {withCredentials: true});
 
             if (onUpload) onUpload(data.iconURL);

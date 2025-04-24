@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar";
 import Home from "./Pages/Home";
 import FullPost from "./Pages/FullPost";
 import CreatePost from "./Pages/CreatePost";
+import EditPost from "./Pages/EditPost";
 import Search from "./Pages/Search";
 import Profile from "./Pages/Profile";
 import Signup from "./Pages/Signup";
@@ -29,6 +30,7 @@ function App(){
           <Route path="/profile/:user_name?" element={<Profile />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/edit/:recipe_id" element={<EditPost />} />
         </Route>
 
         <Route path="/signup" element={<Signup />} />

@@ -57,7 +57,7 @@ router.get('/followers/:user_id', (req, res) => {
     const db = req.db;
 
     db.query(
-        "SELECT u.user_id, u.user_name, u.user_icon FROM follow f JOIN users u ON f.follower_id = u.user_id WHERE f.following_id = ?",
+        "SELECT u.user_id, u.user_name, u.user_icon FROM follow f JOIN users u ON f.follower_id = u.user_id WHERE f.following_id = ? ORDER BY f.follow_time desc",
         [user_id],
         (err, results) => {
             if (err) return res.status(500).json({ error: "Get followers error"});
@@ -72,7 +72,7 @@ router.get('/following/:user_id', (req, res) => {
     const db = req.db;
 
     db.query(
-        "SELECT u.user_id, u.user_name, u.user_icon FROM users u LEFT JOIN follow f ON f.following_id = u.user_id WHERE f.follower_id = ?",
+        "SELECT u.user_id, u.user_name, u.user_icon FROM users u LEFT JOIN follow f ON f.following_id = u.user_id WHERE f.follower_id = ? ORDER BY f.follow_time desc",
         [user_id],
         (err, results) => {
             if (err) return res.status(500).json({ error: "Get following error"});

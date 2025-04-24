@@ -1,7 +1,7 @@
 @use "variables" as *;
 
 .profileListContainer{
-    background-color: $champagne;
+    background-color: $softWhite;
     height: 75%;
     width: 75%;
     max-width: 400px;
@@ -34,11 +34,11 @@
 
         .closeProfileListButton{
             margin-left: auto;
-            color: $lightOrange;
+            color: $orange;
 
             .closeProfileListIcon{
                 transition: transform .3s ease-in-out;
-                color: $lightOrange;
+                color: $darkOrange;
 
                 &:hover{
                     cursor: pointer;
@@ -62,7 +62,7 @@
             display: flex;
             align-items: center;
             justify-content: left;
-            border-bottom: 1px solid $black;
+            border-bottom: 1px solid $darkgray;
     
             .profileListIcon{
                 border-radius: 50%;
@@ -74,7 +74,13 @@
             .profileListName{
                 font-size: 1.2em;
                 font-weight: 450;
-                color: $blue;
+                color: $darkgray;
+                text-decoration: none;
+
+                &:hover{
+                    text-decoration: underline;
+                    color: $blue;
+                }
             }
         }
     }
@@ -82,7 +88,7 @@
     .lineBetween{
         width: 100%;
         height: 1px;
-        background-color: $black;
+        background-color: $darkgray;
     }
 }
 

@@ -4,7 +4,7 @@ import ReactCrop, { centerCrop, convertToPixelCrop, makeAspectCrop } from "react
 import getCroppedImage from "../utils/getCroppedImage";
 
 const minDimension = 150;
-const aspectRatio = 4 / 3;
+const aspectRatio = 1;
 
 export default function FileUpload({ onUpload }){
     const API_URL = import.meta.env.VITE_API_URL;
@@ -17,15 +17,15 @@ export default function FileUpload({ onUpload }){
 
     const onSelectFile = (e) => {
         setButtonOpen(false);
-        const file = e.target.files[0];
-        if (!file) return;
+        const recipeFile = e.target.files[0];
+        if (!recipeFile) return;
 
         const reader = new FileReader();
         reader.onload = () => {
             const iconURL = reader.result;
             setIconSrc(iconURL);
         }
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(recipeFile);
     }
 
     const onIconLoad = (e) => {
@@ -45,13 +45,13 @@ export default function FileUpload({ onUpload }){
         const pixelCrop = convertToPixelCrop(crop, iconRef.current.width, iconRef.current.height );
 
         try{
-            const file = await getCroppedImage(iconRef.current, canvasRef.current, pixelCrop);
+            const recipeFile = await getCroppedImage(iconRef.current, canvasRef.current, pixelCrop, "recipe_image.png");
         
             const formData = new FormData();
-            formData.append("icon", file);
-            const { data } = await axios.post(`${API_URL}/upload/icon`, formData, {withCredentials: true});
+            formData.append("recipe_image", recipeFile);
+            const { data } = await axios.post(`${API_URL}/upload/recipe_image`, formData, {withCredentials: true});
 
-            if (onUpload) onUpload(data.iconURL);
+            if (onUpload) onUpload(data.imageURL);
 
         } catch (err){
             console.error(err);

@@ -1,4 +1,4 @@
-export default function getCroppedImage(image, canvas, crop){
+export default function getCroppedImage(image, canvas, crop, fileName){
     return new Promise((resolve, reject) => {
         const ctx = canvas.getContext("2d");
         if (!ctx) throw new Error ("No 2d content");
@@ -24,7 +24,7 @@ export default function getCroppedImage(image, canvas, crop){
         ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight, 0, 0, image.naturalWidth, image.naturalHeight);
 
         canvas.toBlob(blob => {
-            const file = new File([blob], "avatar.png", {type: blob.type});
+            const file = new File([blob], fileName, {type: blob.type});
             resolve(file);
         })
 
