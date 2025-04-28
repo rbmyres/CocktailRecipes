@@ -74,3 +74,63 @@
         margin-bottom: 2em;
     }
 }
+
+.reports{
+    padding: 1em;
+
+      
+      .tableWrapper{
+        overflow-x: auto;            
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background: $softWhite;
+
+        .reportsTable{
+            width: 100%;
+            border-collapse: collapse;
+
+            th{
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+            }
+
+            td{
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+
+                a{
+                    color: $blue;
+
+                }
+
+                
+            }
+
+            thead{
+                position: sticky;
+                top: 0;
+                background: #fafafa;
+                z-index: 1;
+            }
+            .tbody {
+                tr{
+                    &:nth-child(even){
+                        background: #f9f9f9;
+                    }
+
+                    &:hover{
+                        background: #f1f1f1;
+                    }
+                }
+              }
+        }
+      }
+
+      .closeIcon{
+        font-size: 2em;
+        color: $red;
+        cursor: pointer;
+    }
+}

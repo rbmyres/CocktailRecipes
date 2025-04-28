@@ -38,13 +38,44 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
     
 });
 
-router.get('/list/:recipe_id', async (req, res) => {
-    const db = req.db;
-    const recipe_id = req.params.recipe_id;
+router.get('/reports', async (req, res) => {
+      try {
+        const sql = `
+          SELECT rp.report_id, rp.report_reason, rp.report_description, rp.report_time, rp.user_id AS reporter_id, u1.user_name AS reporter_name, rp.recipe_id, r.recipe_title, r.user_id AS owner_id, u2.user_name AS owner_name 
+          FROM reports rp 
+          JOIN users u1 ON rp.user_id    = u1.user_id
+          JOIN recipes r ON rp.recipe_id  = r.recipe_id
+          JOIN users u2 ON r.user_id     = u2.user_id
+          ORDER BY rp.report_time DESC
+        `;
+  
+        const reports = await query(req.db, sql, []);
+        return res.json(reports);
+      } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Could not load reports' });
+      }
+    }
+  );
 
-    
-
-
-})
+  router.delete('/:report_id', verifyJWT, async (req, res) => {
+    const db         = req.db;
+    const report_id   = parseInt(req.params.report_id, 10);
+  
+    try {
+      const result = await query(
+        db,
+        'DELETE FROM reports WHERE report_id = ?',
+        [report_id]
+      );
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'Report not found' });
+      }
+      return res.json({ success: true });
+    } catch (err) {
+      console.error('Error deleting report:', err);
+      return res.status(500).json({ error: 'Could not delete report' });
+    }
+  });
 
 module.exports = router;

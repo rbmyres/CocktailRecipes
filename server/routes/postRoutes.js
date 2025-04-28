@@ -192,10 +192,10 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
 
 router.get('/small', optionalJWT, async (req, res) => {
   const db = req.db
-  const currentUserId= req.user?.id;
-  const { user_id, post_type, primary_spirit} = req.query
+  const currentUserId= req.user?.id ?? null;
+  const { user_id, post_type, primary_spirit, search, sort} = req.query
 
-  const params = [ currentUserId ?? null ];
+  const params = [ currentUserId ];
   const filters = [];
 
   let sql = `
@@ -206,11 +206,25 @@ router.get('/small', optionalJWT, async (req, res) => {
   if (post_type)      filters.push('r.post_type = ?') && params.push(post_type);
   if (primary_spirit) filters.push('r.primary_spirit = ?') && params.push(primary_spirit);
 
+  if (search?.trim()) {
+    filters.push('(r.recipe_title LIKE ? OR u.user_name LIKE ?)');
+    const like = `%${search.trim()}%`;
+    params.push(like, like);
+  }
+
   if (filters.length) {
     sql += ' WHERE ' + filters.join(' AND ');
   }
 
-  sql += ' GROUP BY r.recipe_id ORDER BY r.post_time DESC';
+  let order = 'r.post_time DESC';
+
+  if (sort === 'oldest'){
+    order = 'r.post_time ASC';
+  } else if (sort === 'popular'){
+    order = 'r.like_count DESC';
+  }
+
+  sql += ` ORDER BY ${order}`;
 
   try {
     const posts = await query(db, sql, params)
@@ -243,17 +257,21 @@ router.get('/liked', verifyJWT, async (req, res) => {
   }
 })
 
-router.get('/:recipe_id', async (req, res) => {
+router.get('/:recipe_id', optionalJWT, async (req, res) => {
   const db = req.db;
+  const currentUserId = req.user?.id ?? null;
   const { recipe_id } = req.params;
 
   try{
     const [recipe] = await query(db,
-        `SELECT r.recipe_id, r.recipe_title, r.primary_spirit, r.post_type, r.recipe_image, r.like_count, r.post_time, u.user_name, u.user_icon, u.user_id AS owner_id
+        `SELECT r.recipe_id, r.recipe_title, r.primary_spirit, r.post_type, r.recipe_image, r.like_count, r.post_time, u.user_name, u.user_icon, u.user_id AS owner_id, CASE WHEN l.like_id IS NULL THEN FALSE ELSE TRUE END AS is_liked
         FROM recipes r
         NATURAL JOIN users u
-        WHERE recipe_id = ?`,
-        [recipe_id]
+        LEFT OUTER JOIN likes l
+        ON r.recipe_id = l.recipe_id
+        AND l.user_id = ?
+        WHERE r.recipe_id = ?`,
+        [currentUserId, recipe_id]
       );
 
       if (!recipe) {
@@ -296,5 +314,38 @@ router.get('/:recipe_id', async (req, res) => {
     res.status(500).json({error: 'Cound not find recipe'})
 
   }
+});
+
+router.delete('/delete/:id', verifyJWT, async (req, res) => {
+  const db = req.db;
+  const user_id = req.user.id;    
+  const is_admin = req.user.is_admin;
+  const recipe_id = req.params.id;
+
+  try {
+    const [post] = await query(db,
+      `SELECT user_id AS owner_id
+      FROM recipes WHERE recipe_id = ?`,
+      [recipe_id]
+    );
+
+    if(!post){
+      return res.status(404).json({error: 'Post not found'});
+    }
+
+    if (post.owner_id !== user_id && !is_admin){
+      return res.status(403).json({ error: 'Not authorized to delete this post' });
+    }
+
+    await query(db,
+      `DELETE FROM recipes WHERE recipe_id = ?`,
+      [recipe_id]
+    );
+    return res.json({success: true})
+  } catch (err) {
+    console.error('Error deleting posts', err);
+    return res.status(500).json({ error: 'Could not delete post' });
+  }
+
 });
 module.exports = router;

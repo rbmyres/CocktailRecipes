@@ -1,9 +1,35 @@
 const express = require('express');
 const verifyJWT = require('../middleware/verifyJWT');
+const optionalJWT = require('../middleware/optionalJWT');
+const query = require('../utils/query');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const router = express.Router();
+
+router.get('/search', async (req, res) => {
+    const db = req.db;
+    const search = (req.query.search || '').trim()
+
+    if (!search.trim()) {
+        return res.json([]);
+    }
+
+    const searchTerm = `%${search}%`;
+
+    try{
+        const users = await query(db,
+            `SELECT user_id, user_name, user_icon 
+            FROM users WHERE user_name LIKE ? ORDER BY user_name`,
+            [searchTerm]
+        );
+        res.json(users);
+    } catch (err) {
+        console.error('Error searching users:', err);
+        res.status(500).json({ error: 'Could not search users' });
+    }
+
+});
 
 router.get('/id/:user_name', (req, res) => {
     const user_name = req.params.user_name;
@@ -17,6 +43,7 @@ router.get('/id/:user_name', (req, res) => {
 
             if (result.length === 0) res.status(500).send({ error: "User not found"});
 
+            
             return res.json(result[0]);
         }
     )
@@ -148,4 +175,64 @@ router.get('/:user_id', (req, res) => {
         }
     )
 });
+
+router.delete('/delete/:user_id', verifyJWT, async (req, res) => {
+    const db = req.db;
+    const user_id = parseInt(req.params.user_id, 10);
+
+    try {
+        const [user] = await query(db,
+          `SELECT user_id FROM users WHERE user_id = ?`,
+          [user_id]
+        );
+    
+        if(!user){
+          return res.status(404).json({error: 'User not found'});
+        }
+
+        const liked = await query(db,
+            'SELECT recipe_id FROM likes WHERE user_id = ?',
+            [user_id]
+          );
+          for (let { recipe_id } of liked) {
+            await query(db,
+              'UPDATE recipes SET like_count = GREATEST(like_count - 1, 0) WHERE recipe_id = ?',
+              [recipe_id]
+            );
+          }
+
+          const following = await query(db,
+            'SELECT following_id FROM follow WHERE follower_id = ?',
+            [user_id]
+          );
+          for (let { following_id } of following) {
+            await query(db,
+              'UPDATE users SET follower_count = GREATEST(follower_count - 1, 0) WHERE user_id = ?',
+              [following_id]
+            );
+          }
+
+          const follower = await query(db,
+            'SELECT follower_id FROM follow WHERE follower_id = ?',
+            [user_id]
+          );
+          for (let { follower_id } of following) {
+            await query(db,
+              'UPDATE users SET follower_count = GREATEST(follower_count - 1, 0) WHERE user_id = ?',
+              [follower_id]
+            );
+          }
+          
+    
+        await query(db,
+          `DELETE FROM users WHERE user_id = ?`,
+          [user_id]
+        );
+        return res.json({success: true})
+      } catch (err) {
+        console.error('Error deleting user', err);
+        return res.status(500).json({ error: 'Could not delete user' });
+      }
+});
+
 module.exports = router;

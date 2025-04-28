@@ -6,6 +6,10 @@ export function useTimeAgo(timestamp) {
   const [label, setLabel] = useState('')
 
   useEffect(() => {
+
+    if(!timestamp){
+      return;
+    }
     const updateLabel = () => {
       let result = formatDistanceToNowStrict(new Date(timestamp), {
         locale: enUS,

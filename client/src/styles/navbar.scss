@@ -4,6 +4,7 @@ nav{
     background-color: $orange;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
     z-index: 200;
+    margin-bottom: 2em;
 
     .navbar{
         width: 100%;
@@ -15,6 +16,7 @@ nav{
 
     li{
         height: 70px;
+        cursor: pointer;
     }
 
     li:first-child{
@@ -84,6 +86,10 @@ nav{
     .sidebar.open{
         transform: translateX(0);
     }
+    
+    .navIcon{
+        font-size: 1.7em;
+    }
 }
 
 .overlay{
@@ -95,19 +101,19 @@ nav{
     z-index: 998;
 }
 
-@media(max-width: 1070px){
+@media(max-width: 865px){
     .navLinkText{
         display: none;
     }
 }
 
-@media(max-width: 670px){
+@media(max-width: 570px){
     .navLinkFull{
         display: none;
     }
 }
 
-@media(min-width: 671px){
+@media(min-width: 571px){
     .openSidebar{
         display: none;
     }

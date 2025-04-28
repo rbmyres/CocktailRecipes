@@ -34,12 +34,12 @@ function SubmitReport({recipe_id, onClose}) {
         <h1>Report</h1>
         <select className="submitReportSelect" value={reason} onChange={(e) => setReason(e.target.value)}>
             <option value="">- Report Reason -</option>
-            <option value="dislike">I just don't like it</option>
-            <option value="harmful">Harmful Content</option>
-            <option value="harassment">Harassment</option>
-            <option value="violence">Violence</option>
-            <option value="spam">Spam</option>
-            <option value="else">Something else</option>
+            <option value="Dislike">I just don't like it</option>
+            <option value="Harmful">Harmful Content</option>
+            <option value="Harassment">Harassment</option>
+            <option value="Violence">Violence</option>
+            <option value="Spam">Spam</option>
+            <option value="Else">Something else</option>
         </select>
         <div className='submitReportText'>
             <div className='submitReportTextTitle'>Description:</div>

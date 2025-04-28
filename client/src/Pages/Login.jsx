@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../AuthContext"; 
 import { useNavigate, Link } from "react-router-dom";
+import { ClimbingBoxLoader } from 'react-spinners';
 
 function Login() {
   const { login, loading } = useAuth(); 
@@ -10,7 +11,7 @@ function Login() {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginStatus, setLoginStatus] = useState('');
 
-  if (loading) return <p>Loading...</p>; 
+  if (loading)   return <ClimbingBoxLoader />
 
   const handleLogin = async (e) => {
     e.preventDefault();

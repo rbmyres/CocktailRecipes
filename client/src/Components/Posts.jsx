@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import axios from 'axios';
 import PostSmall from './PostSmall';
 import { useAuth } from "../AuthContext";
+import { ClimbingBoxLoader } from 'react-spinners';
 
-function Posts({ user_id, post_type, primary_spirit, liked }) {
+function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
     const API_URL = import.meta.env.VITE_API_URL;
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -21,9 +22,10 @@ function Posts({ user_id, post_type, primary_spirit, liked }) {
             if (user_id)        params.user_id        = user_id;
             if (post_type)      params.post_type      = post_type;
             if (primary_spirit) params.primary_spirit = primary_spirit;
+            if (search)         params.search         = search;
+            if (sort)           params.sort           = sort;
         }
         
-      
         axios.get(`${API_URL}${endpoint}`, { params, withCredentials: true })
             .then(res => {
                 setPosts(res.data);
@@ -34,12 +36,10 @@ function Posts({ user_id, post_type, primary_spirit, liked }) {
             .finally(() => {
                 setLoading(false);
             })
-    }, [API_URL, user_id, post_type, primary_spirit, liked]);
+    }, [API_URL, user_id, post_type, primary_spirit, liked, search, sort]);
 
-    if (loading) {
-        return (<p>Loading...</p>)
-    } 
-
+    if (loading)   return <ClimbingBoxLoader />
+    
     return (
             <div className="feed">
 

@@ -1,6 +1,8 @@
 -- CREATE DATABASE IF NOT EXISTS `cocktail_db`
---   DEFAULT CHARACTER SET utf8mb4
---   DEFAULT COLLATE utf8mb4_0900_ai_ci;
+-- DEFAULT CHARACTER SET utf8mb4
+-- DEFAULT COLLATE utf8mb4_0900_ai_ci;
+-- USE `cocktail_db`;
+
 
 --
 -- Table structure for table `users`
@@ -38,7 +40,7 @@ CREATE TABLE `recipes` (
   `post_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `primary_spirit` varchar(20) NOT NULL,
   `recipe_image` varchar(255) NOT NULL,
-  `like_count` int NOT NULL DEFAULT '0',
+  `like_count` INT NOT NULL DEFAULT '0',
   PRIMARY KEY (`recipe_id`),
   KEY `recipe_user_fk` (`user_id`),
   CONSTRAINT `recipe_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
@@ -56,7 +58,7 @@ CREATE TABLE `directions` (
   `direction_description` varchar(100) NOT NULL,
   PRIMARY KEY (`direction_id`),
   KEY `direction_recipe_fk` (`recipe_id`),
-  CONSTRAINT `direction_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE
+  CONSTRAINT `direction_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -102,7 +104,7 @@ CREATE TABLE `likes` (
   PRIMARY KEY (`like_id`),
   UNIQUE KEY `recipe_like_unique` (`user_id`,`recipe_id`),
   KEY `recipe_like_recipe_fk` (`recipe_id`),
-  CONSTRAINT `recipe_like_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE,
+  CONSTRAINT `recipe_like_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE,
   CONSTRAINT `recipe_like_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -119,8 +121,8 @@ CREATE TABLE `recipe_ingredient` (
   PRIMARY KEY (`recipe_ingredient_id`),
   KEY `recipe_ingredient_recipe_fk` (`recipe_id`),
   KEY `recipe_ingredient_ingredient_fk` (`ingredient_id`),
-  CONSTRAINT `recipe_ingredient_ingredient_fk` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`ingredient_id`),
-  CONSTRAINT `recipe_ingredient_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE
+  CONSTRAINT `recipe_ingredient_ingredient_fk` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`),
+  CONSTRAINT `recipe_ingredient_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -138,6 +140,6 @@ CREATE TABLE `reports` (
   PRIMARY KEY (`report_id`),
   KEY `report_user_fk` (`user_id`),
   KEY `report_recipe_fk` (`recipe_id`),
-  CONSTRAINT `report_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE,
+  CONSTRAINT `report_recipe_fk` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE,
   CONSTRAINT `report_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -5,6 +5,7 @@ import Modal from '../Components/Modal';
 import ImageUpload from '../Components/ImageUpload';
 import PostPreview from '../Components/PostPreview';
 import { useNavigate, useParams } from "react-router-dom";
+import { ClimbingBoxLoader } from 'react-spinners';
 
 function EditPost(){
 
@@ -46,7 +47,7 @@ function EditPost(){
           .finally(() => setLoading(false))
       }, [recipe_id, API_URL, authorized.user_id, navigate])
     
-    if (loading)   return <p>Loading…</p>
+    if (loading)   return <ClimbingBoxLoader />
     if (error)     return <p className="error">{error}</p>
 
     const addIng = () => setIngredients([...ingredients, {desc: '', amt: ''}]);

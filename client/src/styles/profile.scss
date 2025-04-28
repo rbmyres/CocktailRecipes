@@ -138,6 +138,36 @@
             }
         }
     }
+
+    .deleteButton{
+        grid-row: 5 / 6;
+        grid-column: 5 / 6;
+        margin: auto;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.15em;
+        font-weight: 500;
+        color: $darkgray;
+        background-color: $red;
+        padding: .6em;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+
+        &:hover{
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+            background-color: $lightRed;
+        }
+    }
+
+    .profilePencil{
+        font-size: 1.5em;
+        color: $darkgray;
+    }
+
+    .profileGear{
+        font-size: 1.8em;
+        color: $darkgray;
+    }
 }
 
 .profile{
@@ -215,7 +245,7 @@
 
 .bottomLine{
     margin: auto;
-    width: 1000%;
+    width: 100%;
     height: 1px;
     background-color: $darkgray;
 }
@@ -306,6 +336,21 @@
                 width: 90px;
                 padding: .3em .5em .3em .5em;
             }
+        }
+
+        .deleteButton{
+            grid-row: 3 / 3;
+            grid-column: 3 / 6;
+        }
+
+        .profilePencil{
+            font-size: 1.2em;
+            color: $darkgray;
+        }
+    
+        .profileGear{
+            font-size: 1.5em;
+            color: $darkgray;
         }
     }
 

@@ -66,7 +66,7 @@ function Profile() {
           <ProfileInfo />
           <div className="buttonContainer">
             <div className="publicButton" onClick={showPublicPosts}><IoGrid /><span>Posts</span></div>
-            <div className="draftsButton" onClick={showDraftPosts}><FaLock /> <span>Drafts</span></div>
+            <div className="draftsButton" onClick={showDraftPosts}><FaLock /> <span>Private</span></div>
             <div className="likedButton" onClick={showLikedPosts}><FaHeart /><span>Liked</span></div>
           </div>
           <Posts 

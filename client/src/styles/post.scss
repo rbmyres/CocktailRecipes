@@ -1,0 +1,181 @@
+@use "variables" as *;
+
+.postContainer{
+    max-width: 500px;
+    margin: auto;
+
+    .postHeader{
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        padding: .5em 0 .5em 0;
+
+        .postUserIcon{
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: .4em .8em .4em .6em;
+            border: 1px solid $lightGray;
+        }
+
+        .postUserName{
+            font-size: 1.2em;
+            font-weight: 450;
+            text-decoration: none;
+            color: $darkgray;
+
+            &:hover{
+                text-decoration: underline;
+                color: $blue;
+            }
+        }
+
+        .postTime{
+            margin: 0 1em 0 auto;
+            font-size: 1em;
+            font-weight: 500;
+            color: $midGray;
+        }
+    }
+
+    .postImage{
+        width: 100%;
+        height: 100%;
+    }
+
+    .postFooter{
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        padding: .5em 0 .5em 1em;
+        gap: 1em;
+
+        .postTitle{
+            margin-right: auto;
+            font-size: 2em;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: $darkgray;
+            padding: .5em 0 .5em 0;
+        }
+
+        .likeIcon{
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            font-size: 1.5em;   
+            cursor: pointer;
+            color: $darkgray;
+
+        }
+
+        .likeCount{
+            background-color: transparent;
+            border: none;
+            font-size: 1.5em;   
+            cursor: pointer;
+            color: $darkgray;
+            padding-right: .6em;
+            
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+
+        .reportIcon{
+            display: flex;
+            align-items: center;
+            font-size: 1.4em;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: $darkgray;
+        }
+
+        .editIcon{
+            display: flex;
+            align-items: center;
+            margin-right: .6em;
+            font-size: 1.4em;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: $darkgray;
+        }
+    }
+
+    .bottomLine{
+        margin: auto;
+        width: 100%;
+        height: 1px;
+        background-color: $darkgray;
+    }
+
+    .ingredients{
+        
+        margin: 2em 0 0 .5em;
+
+
+        h3{
+            font-size: 1.5em;
+            font-weight: 500;
+            color: $darkgray;
+            margin-bottom: 1em;
+        }
+
+        ul{
+            font-size: 1.2em;
+
+            li{
+                margin: .6em 0 0 2em;
+                color: $darkgray;
+
+            }
+        }
+    }
+
+    .directions{
+        margin: 2em 0 0 .5em;
+
+        h3{
+            font-size: 1.5em;
+            font-weight: 500;
+            color: $darkgray;
+            margin-bottom: 1em;
+        }
+
+        ol{
+            font-size: 1.2em;
+            padding-bottom: 2em;
+
+            li{
+                margin: .8em 0 0 2em;
+                color: $darkgray;
+
+            }
+        }
+    }
+    
+    .deleteButton{
+        display: block;
+        margin: 2em 1em 4em auto;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.15em;
+        font-weight: 500;
+        color: $darkgray;
+        background-color: $red;
+        padding: .6em;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+
+        &:hover{
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+            background-color: $lightRed;
+        }
+
+    }
+}

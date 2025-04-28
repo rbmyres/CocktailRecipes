@@ -11,6 +11,7 @@ function ProfileList({open, type, userID, onClose, recipe_id}) {
     if (!open) return;
 
     let endpoint = "";
+    const params = {};
 
     if(type === "Followers"){
       endpoint = `/follow/followers/${userID}`;
@@ -20,9 +21,9 @@ function ProfileList({open, type, userID, onClose, recipe_id}) {
     }
     else if(type === "Likes"){
       endpoint = `/like/list/${recipe_id}`;
-    }
+    } 
 
-    axios.get(`${API_URL}${endpoint}`)
+    axios.get(`${API_URL}${endpoint}`, params)
       .then(res => {
         setUsers(res.data);
       })
