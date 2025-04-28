@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { useLoading } from "../LoadingContext";
 import { FaSearch } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
@@ -9,10 +10,9 @@ import { FaCircleExclamation } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 
-
-
 function Navbar() {
-    const { authorized, loading } = useAuth();
+    const { authorized, loading: authLoading } = useAuth();
+    const { setLoading } = useLoading();
     const location = useLocation();
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -21,6 +21,10 @@ function Navbar() {
         setSidebarOpen(false);
     }, [location.pathname]);
 
+    useEffect(() => {
+        setLoading(authLoading);
+    }, [authLoading, setLoading]);
+
     const handleSidebar = () => setSidebarOpen(prevState => !prevState);
     const closeSidebar = () => setSidebarOpen(false);
 
@@ -28,13 +32,10 @@ function Navbar() {
     const reportsLink = authorized ? "/reports" : "/login";
     const postLink = authorized ? "/create" : "/login";
 
-
-
-    if (loading) return <p>Loading...</p>; 
+    if (authLoading) return null;
 
     return (
         <>
-
         {sidebarOpen && (
             <div className="overlay" onClick={ closeSidebar }></div>
         )}

@@ -5,7 +5,9 @@ import { AuthProvider } from './AuthContext.jsx'
 
 
 createRoot(document.getElementById('root')).render(
-  <AuthProvider>
+  <StrictMode>
+    <AuthProvider>
       <App />
-  </AuthProvider>,
+    </AuthProvider>
+  </StrictMode>
 )

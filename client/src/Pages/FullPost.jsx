@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import { useLoading } from '../LoadingContext';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useTimeAgo } from '../utils/useTimeAgo';
@@ -8,21 +9,24 @@ import { LikeButton } from '../Components/LikeButton';
 import { ReportButton } from '../Components/ReportButton';
 import { FaPencilAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import { ClimbingBoxLoader } from 'react-spinners';
 
 function FullPost() {
 const API_URL = import.meta.env.VITE_API_URL;
 const { recipe_id } = useParams();
 const { authorized } = useAuth();
+const { setLoading } = useLoading();
 const navigate = useNavigate();
 
 const [post, setPost] = useState(null);
-const [loading, setLoading] = useState(true);
+const [localLoading, setLocalLoading] = useState(true);
 const [error, setError] = useState('');
 
 const timeAgo = useTimeAgo(post?.post_time);
 
 useEffect(() => {
+    setLocalLoading(true);
+    setLoading(true);
+    
     axios.get(`${API_URL}/post/${recipe_id}`, { withCredentials: true })
       .then(res => {
         setPost(res.data);
@@ -31,25 +35,30 @@ useEffect(() => {
         console.error('Failed to load recipe:', err);
         setError('Recipe not found');
       })
-      .finally(() => setLoading(false));
-  }, [API_URL, recipe_id]);
+      .finally(() => {
+        setLocalLoading(false);
+        setLoading(false);
+      });
+  }, [API_URL, recipe_id, setLoading]);
 
   const handleDelete = () => {
     if (!window.confirm('Delete this post?')) return;
-
+    
+    setLoading(true);
     axios.delete(`${API_URL}/post/delete/${recipe_id}`, { withCredentials: true })
     .then(() => {
       navigate('/');
     })
     .catch(err => {
       console.error('Delete failed ', err);
+      setLoading(false);
     })
   }
 
   const verified = authorized?.user_id === post?.owner_id || authorized?.is_admin;
 
-  if (loading)   return <ClimbingBoxLoader />
-  if (error)   return <p>{error}</p>;
+  if (localLoading) return null;
+  if (error) return <p>{error}</p>;
 
 const isOwner = authorized?.user_id === post.owner_id;
 

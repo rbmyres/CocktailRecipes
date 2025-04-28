@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../AuthContext"; 
+import { useLoading } from "../LoadingContext";
 import { useNavigate, Link } from "react-router-dom";
 
 function Signup() {
   const API_URL = import.meta.env.VITE_API_URL;
   const { login } = useAuth(); 
+  const { setLoading } = useLoading();
   const navigate = useNavigate();
 
   const [signupEmail, setSignupEmail] = useState('');
@@ -18,6 +20,8 @@ function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    
     try {
       const response = await axios.post(`${API_URL}/auth/signup`, {
         user_name: signupUsername,
@@ -37,11 +41,12 @@ function Signup() {
         }, 1000);
       }
     } catch (error) {
-        if (error.response.data){
+        if (error.response?.data){
           setSignupStatus(error.response.data.message);
         } else {
           setSignupStatus("Signup failed");
         }
+        setLoading(false);
     }
   };
 

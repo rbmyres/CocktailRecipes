@@ -1,29 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext"; 
+import { useLoading } from "../LoadingContext";
 import { useNavigate, Link } from "react-router-dom";
-import { ClimbingBoxLoader } from 'react-spinners';
 
 function Login() {
-  const { login, loading } = useAuth(); 
+  const { login, loading: authLoading } = useAuth(); 
+  const { setLoading } = useLoading();
   const navigate = useNavigate();
 
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginStatus, setLoginStatus] = useState('');
 
-  if (loading)   return <ClimbingBoxLoader />
+  useEffect(() => {
+    setLoading(authLoading);
+  }, [authLoading, setLoading]);
+
+  if (authLoading) return null;
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try{
       await login({ user_name: loginUsername, user_password: loginPassword });
       navigate("/");
     } catch (error) {
-      if (error.response.data){
+      if (error.response?.data){
         setLoginStatus(error.response.data.message);
       } else {
         setLoginStatus("Login Failed");
       }
+      setLoading(false);
     }
   }
  

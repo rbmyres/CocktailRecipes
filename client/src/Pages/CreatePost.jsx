@@ -68,6 +68,8 @@ function CreatePost(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        
         const data = {
             title: title,
             primarySpirit,
@@ -81,8 +83,8 @@ function CreatePost(){
             navigate('/')
         } catch (err){
             console.error(err);
+            setLoading(false);
         }
-
     }
 
     return(

@@ -2,16 +2,18 @@ import React, {useEffect, useState} from "react";
 import axios from 'axios';
 import PostSmall from './PostSmall';
 import { useAuth } from "../AuthContext";
-import { ClimbingBoxLoader } from 'react-spinners';
+import { useLoading } from "../LoadingContext";
 
 function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
     const API_URL = import.meta.env.VITE_API_URL;
     const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError]     = useState(null);
+    const [localLoading, setLocalLoading] = useState(true);
+    const [error, setError] = useState(null);
     const { authorized } = useAuth();
+    const { setLoading } = useLoading();
 
     useEffect(() => {
+        setLocalLoading(true);
         setLoading(true);
         setError(null);
 
@@ -34,16 +36,15 @@ function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
                 console.error(err)
             })
             .finally(() => {
+                setLocalLoading(false);
                 setLoading(false);
             })
-    }, [API_URL, user_id, post_type, primary_spirit, liked, search, sort]);
-
-    if (loading)   return <ClimbingBoxLoader />
+    }, [API_URL, user_id, post_type, primary_spirit, liked, search, sort, setLoading]);
     
     return (
-            <div className="feed">
-
-                {posts.length === 0 ? (
+        <div className="feed">
+            {!localLoading && (
+                posts.length === 0 ? (
                     <p>No posts yet!</p>
                 ) : (
                     posts.map(post => (
@@ -60,8 +61,9 @@ function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
                             liked={post.is_liked}
                         />
                     ))
-                )}
-            </div>
+                )
+            )}
+        </div>
     )
 }
 

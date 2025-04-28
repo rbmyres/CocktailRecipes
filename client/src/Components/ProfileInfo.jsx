@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import { useLoading } from '../LoadingContext';
 import axios from 'axios';
 import IconUpload from './IconUpload';
 import Modal from './Modal';
@@ -14,21 +15,25 @@ import { FaGear } from "react-icons/fa6";
 function ProfileInfo(){
     const API_URL = import.meta.env.VITE_API_URL;
     const { authorized } = useAuth();
+    const { setLoading } = useLoading();
 
     const { user_name } = useParams();
     const navigate = useNavigate();
 
     const [user, setUser] = useState(null);
+    const [localLoading, setLocalLoading] = useState(true);
     const [iconModalOpen, setIconModalOpen] = useState(false);
     const [settingsModalOpen, setSettingsModalOpen] = useState(false);
     const [profileListOpen, setProfileListOpen] = useState(false);
     const [listType, setListType] = useState("");
 
     const fetchProfile = () => {
+        setLocalLoading(true);
+        setLoading(true);
+        
         axios.get(`${API_URL}/user/id/${ user_name }`, {withCredentials: true})
             .then(res => {
                 const userID = res.data.user_id;
-
                 return axios.get(`${API_URL}/user/${ userID }`, {withCredentials: true})
             })
             .then(res => {
@@ -37,25 +42,32 @@ function ProfileInfo(){
             .catch(err => {
                 console.error(err);
             })
+            .finally(() => {
+                setLocalLoading(false);
+                setLoading(false);
+            });
         }
 
         const handleDelete = () => {
             if (!window.confirm('Delete this user?')) return;
-        
+            
+            setLoading(true);
             axios.delete(`${API_URL}/user/delete/${user.user_id}`, { withCredentials: true })
             .then(() => {
               navigate('/');
             })
             .catch(err => {
               console.error('Delete failed ', err);
+              setLoading(false);
             })
           }
 
-    useEffect(fetchProfile, [user_name]);
+    useEffect(() => {
+        fetchProfile();
+    }, [user_name]); 
 
-    if(!user){
-        return (<p>Loading...</p>)
-    }
+    if (localLoading) return null;
+    if (!user) return <p>Loading...</p>;
     return (
         <>
             { authorized.user_id === user.user_id ? (

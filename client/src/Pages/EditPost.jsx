@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
+import { useLoading } from "../LoadingContext";
 import Modal from '../Components/Modal';
 import ImageUpload from '../Components/ImageUpload';
 import PostPreview from '../Components/PostPreview';
 import { useNavigate, useParams } from "react-router-dom";
-import { ClimbingBoxLoader } from 'react-spinners';
 
 function EditPost(){
 
     const { recipe_id } = useParams();
     const { authorized } = useAuth();
+    const { setLoading } = useLoading();
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
@@ -23,10 +24,12 @@ function EditPost(){
     const [imageURL, setImageURL] = useState('');
     const [imageModalOpen, setImageModalOpen] = useState(false);
     const [previewModalOpen, setPreviewModalOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [localLoading, setLocalLoading] = useState(true);
 
     useEffect(() => {
         if (!authorized?.user_id) return;
+        
+        setLocalLoading(true);
         setLoading(true);
 
         axios.get(`${API_URL}/post/${recipe_id}`, { withCredentials: true })
@@ -44,10 +47,13 @@ function EditPost(){
             console.error(err)
             setError('Could not load post.')
           })
-          .finally(() => setLoading(false))
-      }, [recipe_id, API_URL, authorized.user_id, navigate])
+          .finally(() => {
+            setLocalLoading(false);
+            setLoading(false);
+          });
+      }, [recipe_id, API_URL, authorized.user_id, navigate, setLoading])
     
-    if (loading)   return <ClimbingBoxLoader />
+    if (localLoading) return null;
     if (error)     return <p className="error">{error}</p>
 
     const addIng = () => setIngredients([...ingredients, {desc: '', amt: ''}]);
@@ -96,6 +102,7 @@ function EditPost(){
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
+        setLoading(true);
     
         const data = {
             title: title,
@@ -112,6 +119,7 @@ function EditPost(){
         } catch (err) {
           console.error(err)
           setError('Update failed.')
+          setLoading(false);
         }
       }
 
