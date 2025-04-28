@@ -23,7 +23,6 @@ function PostPreview({recipe_title, user_name, user_icon, recipe_image, like_cou
 
           <div className='previewFooter'>
             <LikeButton />
-            <ReportButton />
             <button className='editIcon'><FaPencilAlt /></button>
           </div>
 

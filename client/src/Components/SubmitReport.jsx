@@ -43,7 +43,7 @@ function SubmitReport({recipe_id, onClose}) {
         </select>
         <div className='submitReportText'>
             <div className='submitReportTextTitle'>Description:</div>
-            <textarea maxLength='50' className='submitReportTextBox' onChange={(e) => setDescription(e.target.value)}></textarea>
+            <textarea maxLength='195' className='submitReportTextBox' onChange={(e) => setDescription(e.target.value)}></textarea>
         </div>
         
         <button type='button' className='submitReportButton' onClick={handleSubmit}>Submit</button>

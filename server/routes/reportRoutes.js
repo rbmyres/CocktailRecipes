@@ -12,7 +12,7 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
     try {
         const row = await query(
             db,
-            `SELECT report_id FROM report
+            `SELECT report_id FROM reports
             WHERE user_id = ? AND recipe_id = ?`,
             [user_id, recipe_id]
         );
@@ -23,7 +23,7 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
 
         await query(
             db,
-            `INSERT into report
+            `INSERT into reports
             (user_id, recipe_id, report_reason, report_description)
             VALUES (?, ?, ?, ?)`,
             [user_id, recipe_id, reason, description]

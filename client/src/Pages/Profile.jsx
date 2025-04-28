@@ -15,8 +15,8 @@ function Profile() {
   const { authorized} = useAuth(); 
   const { user_name } = useParams();
   const [user, setUser] = useState(null);
-  const [postType, setPostType] = useState('');
-  const [liked, setLiked] = useState(null);
+  const [postType, setPostType] = useState('Public');
+  const [liked, setLiked] = useState(false);
 
   if (!authorized) { return <Login /> }
 
@@ -41,6 +41,21 @@ function Profile() {
         return (<p>No user found</p>)
     }
 
+    const showPublicPosts = () => {
+      setPostType("Public");
+      setLiked(false);
+    };
+  
+    const showDraftPosts = () => {
+      setPostType("Drafts");
+      setLiked(false);
+    };
+  
+    const showLikedPosts = () => {
+      setPostType('');
+      setLiked(true);
+    };
+
     const isOwner = authorized.user_id === user.user_id;
     
 
@@ -50,9 +65,9 @@ function Profile() {
         <div className="profile">
           <ProfileInfo />
           <div className="buttonContainer">
-            <div className="publicButton" onClick={() => setPostType("Public")}><IoGrid /><span>Posts</span></div>
-            <div className="draftsButton" onClick={() => setPostType("Drafts")}><FaLock /> <span>Drafts</span></div>
-            <div className="likedButton" onClick={() => setLiked(true)}><FaHeart /><span>Liked</span></div>
+            <div className="publicButton" onClick={showPublicPosts}><IoGrid /><span>Posts</span></div>
+            <div className="draftsButton" onClick={showDraftPosts}><FaLock /> <span>Drafts</span></div>
+            <div className="likedButton" onClick={showLikedPosts}><FaHeart /><span>Liked</span></div>
           </div>
           <Posts 
             user_id={user.user_id}

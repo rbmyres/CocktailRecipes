@@ -24,7 +24,7 @@ router.post('/create', verifyJWT, async (req, res) => {
   try {
     const recipeResult = await query(
         db,
-            `INSERT INTO recipe
+            `INSERT INTO recipes
             (user_id, recipe_title, post_type, primary_spirit, recipe_image)
             VALUES (?, ?, ?, ?, ?)`,
         [user_id, title.trim(), postType, primarySpirit, imageURL]
@@ -37,7 +37,7 @@ router.post('/create', verifyJWT, async (req, res) => {
       if (!dir) continue;
       await query(
         db,
-            `INSERT INTO direction
+            `INSERT INTO directions
             (recipe_id, direction_description)
             VALUES (?, ?)`,
         [recipe_id, dir]
@@ -52,7 +52,7 @@ router.post('/create', verifyJWT, async (req, res) => {
       const rows = await query(
         db,
             `SELECT ingredient_id
-            FROM ingredient
+            FROM ingredients
             WHERE ingredient_description = ?`,
         [desc]
       );
@@ -63,7 +63,7 @@ router.post('/create', verifyJWT, async (req, res) => {
       } else {
         const insertIng = await query(
           db,
-            `INSERT INTO ingredient (ingredient_description)
+            `INSERT INTO ingredients (ingredient_description)
             VALUES (?)`,
           [desc]
         );
@@ -115,7 +115,7 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
   try {
     await query(
       db,
-      `UPDATE recipe
+      `UPDATE recipes
          SET recipe_title   = ?,
              post_type      = ?,
              primary_spirit = ?,
@@ -126,7 +126,7 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
 
     await query(
       db,
-      `DELETE FROM direction WHERE recipe_id = ?`,
+      `DELETE FROM directions WHERE recipe_id = ?`,
       [recipe_id]
     )
     for (let raw of directions) {
@@ -135,7 +135,7 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
 
       await query(
         db,
-        `INSERT INTO direction
+        `INSERT INTO directions
            (recipe_id, direction_description)
          VALUES (?, ?)`,
         [recipe_id, dir]
@@ -155,7 +155,7 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
       const rows = await query(
         db,
         `SELECT ingredient_id
-           FROM ingredient
+           FROM ingredients
           WHERE ingredient_description = ?`,
         [desc]
       )
@@ -166,7 +166,7 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
       } else {
         const insertIng = await query(
           db,
-          `INSERT INTO ingredient (ingredient_description)
+          `INSERT INTO ingredients (ingredient_description)
            VALUES (?)`,
           [desc]
         )
@@ -193,39 +193,24 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
 router.get('/small', optionalJWT, async (req, res) => {
   const db = req.db
   const currentUserId= req.user?.id;
-  const { user_id, post_type, primary_spirit } = req.query
+  const { user_id, post_type, primary_spirit} = req.query
 
-  const params = [];
+  const params = [ currentUserId ?? null ];
   const filters = [];
 
   let sql = `
-    SELECT r.recipe_id, r.recipe_title, r.recipe_image, r.like_count, r.post_time, r.primary_spirit, r.post_type, u.user_name, u.user_icon, u.user_id AS owner_id`
+    SELECT r.recipe_id, r.recipe_title, r.recipe_image, r.like_count, r.post_time, r.primary_spirit, r.post_type, u.user_name, u.user_icon, u.user_id AS owner_id, CASE WHEN l.like_id IS NULL THEN FALSE ELSE TRUE END AS is_liked
+    FROM recipes r JOIN users u ON r.user_id = u.user_id LEFT OUTER JOIN likes l ON r.recipe_id = l.recipe_id AND l.user_id = ?`
 
-  if (currentUserId) {
-    sql += `, CASE WHEN l.like_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_liked`;
-  } else {
-    sql += `, FALSE AS is_liked`; 
-  }
-  
-  sql += `
-    FROM recipe r
-    JOIN users u ON r.user_id = u.user_id
-  `;
-  
-  if (currentUserId) {
-    sql += `LEFT JOIN likes l ON r.recipe_id = l.recipe_id AND l.user_id = ?`;
-    params.push(currentUserId);
-  }
-
-  if (user_id)        filters.push('r.user_id = ?') && params.push(user_id)
-  if (post_type)      filters.push('r.post_type = ?') && params.push(post_type)
-  if (primary_spirit) filters.push('r.primary_spirit = ?') && params.push(primary_spirit)
+  if (user_id)        filters.push('r.user_id = ?') && params.push(user_id);
+  if (post_type)      filters.push('r.post_type = ?') && params.push(post_type);
+  if (primary_spirit) filters.push('r.primary_spirit = ?') && params.push(primary_spirit);
 
   if (filters.length) {
-    sql += ' WHERE ' + filters.join(' AND ')
+    sql += ' WHERE ' + filters.join(' AND ');
   }
 
-  sql += ' GROUP BY r.recipe_id ORDER BY r.post_time DESC'
+  sql += ' GROUP BY r.recipe_id ORDER BY r.post_time DESC';
 
   try {
     const posts = await query(db, sql, params)
@@ -236,6 +221,28 @@ router.get('/small', optionalJWT, async (req, res) => {
   }
 });
 
+router.get('/liked', verifyJWT, async (req, res) => {
+  const db = req.db;
+  const user_id = req.user.id;
+
+  try{
+    const posts = await query(db, 
+      `SELECT r.recipe_id, r.recipe_title, r.recipe_image, r.like_count, r.post_time, u.user_name, u.user_icon, u.user_id AS owner_id, TRUE AS is_liked
+      FROM recipes r
+      JOIN likes l ON r.recipe_id = l.recipe_id AND l.user_id = ?
+      JOIN users u ON r.user_id = u.user_id
+      WHERE r.post_type = 'Public'
+      ORDER BY r.post_time DESC`,
+      [user_id]
+    );
+
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({error: "Could not load liked posts"});
+  }
+})
+
 router.get('/:recipe_id', async (req, res) => {
   const db = req.db;
   const { recipe_id } = req.params;
@@ -243,7 +250,7 @@ router.get('/:recipe_id', async (req, res) => {
   try{
     const [recipe] = await query(db,
         `SELECT r.recipe_id, r.recipe_title, r.primary_spirit, r.post_type, r.recipe_image, r.like_count, r.post_time, u.user_name, u.user_icon, u.user_id AS owner_id
-        FROM recipe r
+        FROM recipes r
         NATURAL JOIN users u
         WHERE recipe_id = ?`,
         [recipe_id]
@@ -255,7 +262,7 @@ router.get('/:recipe_id', async (req, res) => {
 
       const directions = await query(db,
         `SELECT direction_description as dir
-        FROM direction
+        FROM directions
         WHERE recipe_id = ?`,
         [recipe_id]
       );
@@ -263,7 +270,7 @@ router.get('/:recipe_id', async (req, res) => {
       const ingredients = await query(db, 
         `SELECT i.ingredient_description as ing, ri.ingredient_amount as amt
         FROM recipe_ingredient ri
-        JOIN ingredient i
+        JOIN ingredients i
         ON ri.ingredient_id = i.ingredient_id
         WHERE ri.recipe_id = ?`,
         [recipe_id]

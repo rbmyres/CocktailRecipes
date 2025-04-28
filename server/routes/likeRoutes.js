@@ -28,7 +28,7 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
 
             await query(
                 db, 
-                `UPDATE recipe
+                `UPDATE recipes
                 SET like_count = like_count - 1
                 WHERE recipe_id = ?`,
                 [recipe_id]
@@ -46,7 +46,7 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
 
             await query(
                 db,
-                `UPDATE recipe
+                `UPDATE recipes
                 SET like_count = like_count + 1
                 WHERE recipe_id = ?`,
                 [recipe_id]
@@ -57,7 +57,7 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
 
         const likeCountQuery = await query(
             db,
-            `SELECT like_count FROM recipe
+            `SELECT like_count FROM recipes
             WHERE recipe_id = ?`,
             [recipe_id]
         );
