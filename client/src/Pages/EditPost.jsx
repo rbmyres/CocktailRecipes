@@ -172,8 +172,7 @@ function EditPost(){
                     <select value={postType} onChange={(e) => setPostType(e.target.value)}>
                         <option value="">- Please Select -</option>
                         <option value="Public">Public</option>
-                        <option value="Friends Only">Friends Only</option>
-                        <option value="Drafts">Drafts</option>
+                        <option value="Drafts">Private</option>
                     </select>
                 </div>
 
