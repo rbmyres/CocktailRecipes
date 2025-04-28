@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext"; 
 import { useLoading } from "../LoadingContext";
 import { useNavigate, Link } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 function Login() {
   const { login, loading: authLoading } = useAuth(); 
@@ -23,12 +24,15 @@ function Login() {
     setLoading(true);
     try{
       await login({ user_name: loginUsername, user_password: loginPassword });
+      toast.success('Successfully logged in!');
       navigate("/");
     } catch (error) {
       if (error.response?.data){
         setLoginStatus(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
         setLoginStatus("Login Failed");
+        toast.error('Login failed. Please try again.');
       }
       setLoading(false);
     }

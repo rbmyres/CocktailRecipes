@@ -11,6 +11,7 @@ import FollowButton from './FollowButton';
 import ProfileList from './ProfileList';
 import { FaPencilAlt } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
+import toast from 'react-hot-toast';
 
 function ProfileInfo(){
     const API_URL = import.meta.env.VITE_API_URL;
@@ -49,18 +50,39 @@ function ProfileInfo(){
         }
 
         const handleDelete = () => {
-            if (!window.confirm('Delete this user?')) return;
-            
-            setLoading(true);
-            axios.delete(`${API_URL}/user/delete/${user.user_id}`, { withCredentials: true })
-            .then(() => {
-              navigate('/');
-            })
-            .catch(err => {
-              console.error('Delete failed ', err);
-              setLoading(false);
-            })
-          }
+            toast((t) => (
+              <div>
+                <p>Are you sure you want to delete this user?</p>
+                <div className="toast-actions">
+                  <button 
+                    onClick={() => {
+                      toast.dismiss(t.id);
+                      setLoading(true);
+                      axios.delete(`${API_URL}/user/delete/${user.user_id}`, { withCredentials: true })
+                        .then(() => {
+                          toast.success('User successfully deleted');
+                          navigate('/');
+                        })
+                        .catch(err => {
+                          console.error('Delete failed ', err);
+                          toast.error('Failed to delete user');
+                          setLoading(false);
+                        });
+                    }}
+                    className="confirm-btn"
+                  >
+                    Delete
+                  </button>
+                  <button 
+                    onClick={() => toast.dismiss(t.id)}
+                    className="cancel-btn"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ), { duration: 10000 });
+        };
 
     useEffect(() => {
         fetchProfile();
@@ -106,7 +128,8 @@ function ProfileInfo(){
                                 setUser(u => ({
                                     ...u,
                                     user_icon: iconURL
-                                }));
+                                }
+                            ));
                                 setIconModalOpen(false);
                             }}
                         />

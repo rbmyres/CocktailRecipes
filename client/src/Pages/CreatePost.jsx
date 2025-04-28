@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../AuthContext";
+import { useLoading } from "../LoadingContext"; 
 import Modal from '../Components/Modal';
 import ImageUpload from '../Components/ImageUpload';
 import PostPreview from '../Components/PostPreview';
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 
 function CreatePost(){
@@ -15,6 +17,7 @@ function CreatePost(){
 
     const [title, setTitle] = useState('');
     const [primarySpirit, setPrimarySpirit] = useState('');
+    const { setLoading } = useLoading(); 
     const [postType, setPostType] = useState('');
     const [ingredients, setIngredients] = useState([{desc: '', amt: ''}]);
     const [directions, setDirections] = useState(['']);
@@ -80,9 +83,11 @@ function CreatePost(){
         }
         try {
             await axios.post(`${API_URL}/post/create`, data, { withCredentials: true});
-            navigate('/')
+            navigate('/');
+            toast.success("Post created successfully!");
         } catch (err){
             console.error(err);
+            toast.error("Failed to create post");
             setLoading(false);
         }
     }
@@ -136,7 +141,6 @@ function CreatePost(){
                     <select value={postType} onChange={(e) => setPostType(e.target.value)}>
                         <option value="">- Please Select -</option>
                         <option value="Public">Public</option>
-                        <option value="Friends Only">Friends Only</option>
                         <option value="Drafts">Private</option>
                     </select>
                 </div>

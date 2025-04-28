@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../AuthContext"; 
 import { useLoading } from "../LoadingContext";
 import { useNavigate, Link } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 function Signup() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -33,6 +34,7 @@ function Signup() {
       },
       {withCredentials: true}
     );
+      toast.success('Account created successfully!');
       setSignupStatus(response.data.message);
       if (response.status === 201) {
         await login({ user_name: signupUsername, user_password: signupPassword });
@@ -41,11 +43,8 @@ function Signup() {
         }, 1000);
       }
     } catch (error) {
-        if (error.response?.data){
-          setSignupStatus(error.response.data.message);
-        } else {
-          setSignupStatus("Signup failed");
-        }
+        toast.error(error.response?.data?.message || 'Signup failed');
+        setSignupStatus(error.response?.data?.message || 'Signup failed');
         setLoading(false);
     }
   };
@@ -86,15 +85,7 @@ function Signup() {
                   onChange={(e) => setSignupPassword(e.target.value)}
                   required
               />
-              <label className='privacyToggle'>
-                <input 
-                type="checkbox" 
-                onChange={(e) => setSignupPrivacy(e.target.checked)} 
-                />
-                <span className='privacyToggleText'>Private Profile?</span>
-              </label>
               <button type="submit">Sign Up</button>
-              <div className="signupStatus">{signupStatus}</div>
             </form>
             <div className="loginLink">Already have an account? <Link to="/login">Log In Here</Link></div>
         </div>

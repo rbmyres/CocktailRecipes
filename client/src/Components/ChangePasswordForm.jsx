@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
 
 
 function ChangePasswordForm({ onBack }) {
@@ -15,6 +17,7 @@ function ChangePasswordForm({ onBack }) {
         current_password: currentPassword,
         new_password: newPassword
       }, {withCredentials: true});
+      toast.success('Password updated successfully!');
       setPasswordStatus(response.data.message);
     } catch (error) {
       if (error.response.data) {
@@ -43,7 +46,6 @@ function ChangePasswordForm({ onBack }) {
           required
         />
         <button className="submitButton" type="submit">Submit Changes</button>
-        <div className="passwordStatus">{passwordStatus}</div>
       </form>
     </div>
   )

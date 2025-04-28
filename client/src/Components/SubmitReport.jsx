@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useAuth } from '../AuthContext';
+import toast from 'react-hot-toast';
 
 function SubmitReport({recipe_id, onClose}) {
     console.log('SubmitReport mounted for recipe', recipe_id);
@@ -21,11 +22,12 @@ function SubmitReport({recipe_id, onClose}) {
 
         axios.post(`${API_URL}/report/${recipe_id}`, {reason, description}, {withCredentials: true})
             .then(() => {
+                toast.success('Report submitted');
                 onClose();
             })
             .catch((err) => {
                 console.error(err);
-                setError(err.response?.data?.error || 'Could not submit report');
+                toast.error(err.response?.data?.error || 'Could not submit report');
             });
     }
 

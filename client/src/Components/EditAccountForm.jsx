@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function EditAccountForm({onUpdated, onBack}) {
     const API_URL = import.meta.env.VITE_API_URL;
@@ -40,15 +41,13 @@ function EditAccountForm({onUpdated, onBack}) {
                 },
                 {withCredentials: true}
             );
+            toast.success('Account updated successfully!');
             setEditStatus(response.data.message);
             onUpdated();
             navigate(`/profile/${editUsername}`, {replace: true})
         }catch (error){
-            if (error.response.data) {
-                setEditStatus(error.response.data.message);
-            } else {
-                setEditStatus("Edit failed")
-            }
+            toast.error(error.response?.data?.message || 'Signup failed');
+            setEditStatus(error.response?.data?.message || 'Signup failed');
         }
     };
 
@@ -90,16 +89,7 @@ function EditAccountForm({onUpdated, onBack}) {
                 required
                 value={editUsername}
             />
-            <label className='privacyToggle'>
-                <input 
-                type="checkbox" 
-                checked={editPrivacy} 
-                onChange={(e) => setEditPrivacy(e.target.checked)} 
-                />
-                <span className='privacyToggleText'>Private Profile?</span>
-            </label>
             <button className="submitButton" type="submit">Submit Changes</button>
-            <div className="signupStatus">{editStatus}</div>
         </form>
     </div>
   )

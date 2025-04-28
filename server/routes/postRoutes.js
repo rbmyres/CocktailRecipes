@@ -333,10 +333,6 @@ router.delete('/delete/:id', verifyJWT, async (req, res) => {
       return res.status(404).json({error: 'Post not found'});
     }
 
-    if (post.owner_id !== user_id && !is_admin){
-      return res.status(403).json({ error: 'Not authorized to delete this post' });
-    }
-
     await query(db,
       `DELETE FROM recipes WHERE recipe_id = ?`,
       [recipe_id]

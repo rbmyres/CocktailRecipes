@@ -6,6 +6,7 @@ import Navbar from "./Components/Navbar";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import LoadingSpinner from "./Components/LoadingSpinner";
 import { LoadingProvider } from "./LoadingContext";
+import { Toaster } from 'react-hot-toast';
 
 const Home = lazy(() => import('./Pages/Home'));
 const FullPost = lazy(() => import('./Pages/FullPost'));
@@ -23,6 +24,9 @@ function App(){
     <LoadingProvider>
       <Router>
         <Navbar />
+
+        <Toaster position="top-right" />
+
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<Home />} />

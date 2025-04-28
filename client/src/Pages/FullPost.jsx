@@ -9,6 +9,7 @@ import { LikeButton } from '../Components/LikeButton';
 import { ReportButton } from '../Components/ReportButton';
 import { FaPencilAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function FullPost() {
 const API_URL = import.meta.env.VITE_API_URL;
@@ -42,19 +43,39 @@ useEffect(() => {
   }, [API_URL, recipe_id, setLoading]);
 
   const handleDelete = () => {
-    if (!window.confirm('Delete this post?')) return;
-    
-    setLoading(true);
-    axios.delete(`${API_URL}/post/delete/${recipe_id}`, { withCredentials: true })
-    .then(() => {
-      navigate('/');
-    })
-    .catch(err => {
-      console.error('Delete failed ', err);
-      setLoading(false);
-    })
-  }
-
+    toast((t) => (
+      <div>
+        <p>Are you sure you want to delete this post?</p>
+        <div className="toast-actions">
+          <button 
+            onClick={() => {
+              toast.dismiss(t.id);
+              setLoading(true);
+              axios.delete(`${API_URL}/post/delete/${recipe_id}`, { withCredentials: true })
+                .then(() => {
+                  toast.success('Post successfully deleted');
+                  navigate('/');
+                })
+                .catch(err => {
+                  console.error('Delete failed ', err);
+                  toast.error('Failed to delete post');
+                  setLoading(false);
+                });
+            }}
+            className="confirm-btn"
+          >
+            Delete
+          </button>
+          <button 
+            onClick={() => toast.dismiss(t.id)}
+            className="cancel-btn"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: 10000 });
+  };
   const verified = authorized?.user_id === post?.owner_id || authorized?.is_admin;
 
   if (localLoading) return null;

@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import ReactCrop, { centerCrop, convertToPixelCrop, makeAspectCrop } from "react-image-crop";
 import getCroppedImage from "../utils/getCroppedImage";
+import { useLoading } from "../LoadingContext";
+import toast from 'react-hot-toast';
 
 const minDimension = 150;
 const aspectRatio = 1;
@@ -10,6 +12,7 @@ export default function FileUpload({ onUpload }){
     const API_URL = import.meta.env.VITE_API_URL;
     const iconRef = useRef(null);
     const canvasRef = useRef(null);
+    const { setLoading } = useLoading();
 
     const [iconSrc, setIconSrc] = useState("");
     const [crop, setCrop] = useState();
@@ -43,6 +46,8 @@ export default function FileUpload({ onUpload }){
     }
 
     const upload = async () => {
+        setLoading(true);
+        const loadingToast = toast.loading("Uploading icon...");
         const pixelCrop = convertToPixelCrop(crop, iconRef.current.width, iconRef.current.height );
 
         try{
@@ -52,10 +57,17 @@ export default function FileUpload({ onUpload }){
             formData.append("user_icon", iconFile);
             const { data } = await axios.post(`${API_URL}/upload/icon`, formData, {withCredentials: true});
 
+            toast.dismiss(loadingToast);
+            toast.success("Icon uploaded successfully!");
+
             if (onUpload) onUpload(data.iconURL);
 
         } catch (err){
             console.error(err);
+            toast.dismiss(loadingToast);
+            toast.error("Failed to upload icon");
+        } finally {
+            setLoading(false);
         }
     }
 
