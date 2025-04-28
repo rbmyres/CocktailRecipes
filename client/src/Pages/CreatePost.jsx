@@ -62,7 +62,7 @@ function CreatePost(){
 
     const handlePreview = () => {
         if (!formComplete) {
-            setError("Please fill in all fields!");
+            toast.error("Please fill in all fields");
             return;
         }
         setError('');

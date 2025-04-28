@@ -56,7 +56,6 @@ function Login() {
             required
           />
           <button type="submit">Log In</button>
-          <div className="loginStatus">{loginStatus}</div>
         </form>
         <div className="signupLink">Don't have an account? <Link to="/signup">Sign Up Here</Link></div>
     </div>

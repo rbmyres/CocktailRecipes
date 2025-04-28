@@ -25,7 +25,7 @@ function App(){
       <Router>
         <Navbar />
 
-        <Toaster position="top-right" />
+        <Toaster position="top-right" containerStyle={{ top: 85 }}/>
 
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
