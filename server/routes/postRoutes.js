@@ -334,6 +334,11 @@ router.delete('/delete/:id', verifyJWT, async (req, res) => {
     }
 
     await query(db,
+      `UPDATE users SET post_count = GREATEST(post_count - 1, 0) WHERE user_id = ?`,
+      [post.owner_id]
+    );
+
+    await query(db,
       `DELETE FROM recipes WHERE recipe_id = ?`,
       [recipe_id]
     );

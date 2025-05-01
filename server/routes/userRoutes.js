@@ -201,24 +201,24 @@ router.delete('/delete/:user_id', verifyJWT, async (req, res) => {
             );
           }
 
-          const following = await query(db,
+          const follower = await query(db,
             'SELECT following_id FROM follow WHERE follower_id = ?',
             [user_id]
           );
-          for (let { following_id } of following) {
+          for (let { following_id } of follower) {
             await query(db,
               'UPDATE users SET follower_count = GREATEST(follower_count - 1, 0) WHERE user_id = ?',
               [following_id]
             );
           }
 
-          const follower = await query(db,
-            'SELECT follower_id FROM follow WHERE follower_id = ?',
+          const following = await query(db,
+            'SELECT follower_id FROM follow WHERE following_id = ?',
             [user_id]
           );
           for (let { follower_id } of following) {
             await query(db,
-              'UPDATE users SET follower_count = GREATEST(follower_count - 1, 0) WHERE user_id = ?',
+              'UPDATE users SET following_count = GREATEST(following_count - 1, 0) WHERE user_id = ?',
               [follower_id]
             );
           }
