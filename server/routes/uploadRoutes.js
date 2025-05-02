@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const verifyJWT = require('../middleware/verifyJWT');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const accountID = process.env.R2_ACCOUNT_ID;
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const s3Client = new S3Client({
   region: 'auto',
-  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  endpoint: `https://${accountID}.r2.cloudflarestorage.com`,
   credentials: {
     accessKeyId: process.env.R2_ACCESS_KEY_ID,
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
@@ -28,7 +29,7 @@ async function uploadToR2(file, folder = '') {
   
   await s3Client.send(command);
   
-  return `https://${process.env.R2_BUCKET_NAME}.${process.env.R2_ACCOUNT_ID}.r2.dev/${fileName}`;
+  return `https://${accountID}.r2.cloudflarestorage.com/mixer-uploads/${fileName}`;
 }
 
 router.post("/icon", verifyJWT, upload.single("user_icon"), async (req, res, next) => {
