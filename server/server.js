@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const path = require('path');
+const port = process.env.PORT || 8080;
 
 dotenv.config();
 const app = express();
@@ -44,6 +45,6 @@ app.use('/like', likeRoutes);
 app.use('/post', postRoutes);
 app.use('/report', reportRoutes);
 
-app.listen(8080, () => {
-    console.log("Server started on port 8080");
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 });
