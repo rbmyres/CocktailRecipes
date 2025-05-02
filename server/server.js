@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const path = require('path');
 const port = process.env.PORT || 8080;
+const ALLOWED_ORIGIN = process.env.CORS_ORIGIN;
 
 dotenv.config();
 const app = express();
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: "https://mixer.rbmyres.com", 
+    origin: ALLOWED_ORIGIN, 
     credentials: true
 }));
 
