@@ -19,13 +19,13 @@ function PostSmall({recipe_id, recipe_title, user_name, user_icon, recipe_image,
   return (
         <div className="previewContainer">
           <div className='previewHeader'>
-            <img className="previewUserIcon" src={`${API_URL}${user_icon}`} alt={`${user_name}'s icon`} width={128} height={128}/>
+            <img className="previewUserIcon" src={user_icon} alt={`${user_name}'s icon`} width={128} height={128}/>
             <Link className='previewUserName'to={`/profile/${user_name}`}>{user_name}</Link>
             <div className='previewTime'>{timeAgo}</div>
           </div>
 
           <Link to={`/post/${recipe_id}`} className='previewBody'>
-              <img className="previewImage" src={`${API_URL}${recipe_image}`} alt={`image of ${recipe_title}`} />
+              <img className="previewImage" src={recipe_image} alt={`image of ${recipe_title}`} />
               <h3 className='previewTitle'>{recipe_title}</h3>
             </Link>
 

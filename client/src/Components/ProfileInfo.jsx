@@ -96,7 +96,7 @@ function ProfileInfo(){
                 <>
                 <div className="profileInfoContainer">
                     <div className='profileIconDiv'>
-                        <img className="profileIcon" src={`${API_URL}${user.user_icon}`} alt={`${user.user_name}'s icon`} width={128} height={128}/>
+                        <img className="profileIcon" src={user.user_icon} alt={`${user.user_name}'s icon`} width={128} height={128}/>
                         <div className='changeIconDiv' onClick={() => setIconModalOpen(true)}>
                             <FaPencilAlt className='profilePencil'></FaPencilAlt>
                         </div>
@@ -153,7 +153,7 @@ function ProfileInfo(){
                 <>
                 <div className="profileInfoContainer">
                     <div className='profileIconDiv'>
-                        <img className="profileIcon" src={`${API_URL}${user.user_icon}`} alt={`${user.user_name}'s icon`} width={128} height={128}/>
+                        <img className="profileIcon" src={user.user_icon} alt={`${user.user_name}'s icon`} width={128} height={128}/>
                     </div>
 
                     <div className="username"> { user.user_name}</div>

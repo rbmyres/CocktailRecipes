@@ -90,12 +90,12 @@ const isOwner = authorized?.user_id === post.owner_id;
     <div className='postContainer'>
 
       <div className='postHeader'>
-        <img className='postUserIcon' src={`${API_URL}${post.user_icon}`} alt={`${post.user_name}'s icon`} width={128} height={128} />
+        <img className='postUserIcon' src={post.user_icon} alt={`${post.user_name}'s icon`} width={128} height={128} />
         <Link className='postUserName'to={`/profile/${post.user_name}`}>{post.user_name}</Link>
         <div className='postTime'>{timeAgo}</div>
       </div>
 
-      <img className="postImage" src={`${API_URL}${post.recipe_image}`} alt={`image of ${post.recipe_title}`} />
+      <img className="postImage" src={post.recipe_image} alt={`image of ${post.recipe_title}`} />
       
       <div className='postFooter'>
         <h3 className='postTitle'>{post.recipe_title}</h3>

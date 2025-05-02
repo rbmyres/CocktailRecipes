@@ -12,12 +12,12 @@ function PostPreview({recipe_title, user_name, user_icon, recipe_image, like_cou
         <div className="previewContainer">
 
           <div className='previewHeader'>
-            <img className="previewUserIcon" src={`${API_URL}${user_icon}`} alt={`${user_name}'s icon`} width={128} height={128}/>
+            <img className="previewUserIcon" src={user_icon} alt={`${user_name}'s icon`} width={128} height={128}/>
             <div className='previewUserName'>{user_name}</div>
           </div>
 
           <div className='previewBody'>
-            <img className="previewImage" src={`${API_URL}${recipe_image}`} alt={`image of ${recipe_title}`} />
+            <img className="previewImage" src={recipe_image} alt={`image of ${recipe_title}`} />
             <h3 className='previewTitle'>{recipe_title}</h3>
           </div>
 

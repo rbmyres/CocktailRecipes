@@ -42,7 +42,7 @@ function Search(){
                 ) : (
                 users.map((u) => (
                     <div key={u.user_id} className='listItem'>
-                    <img className="profileListIcon" src={`${API_URL}${u.user_icon}`} alt={`${u.user_name}'s icon`} width={128} height={128}/>
+                    <img className="profileListIcon" src={u.user_icon} alt={`${u.user_name}'s icon`} width={128} height={128}/>
                     <Link className='profileListName'to={`/profile/${u.user_name}`} >{u.user_name}</Link>
                     </div>
                 ))
