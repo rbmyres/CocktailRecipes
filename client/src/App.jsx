@@ -16,7 +16,7 @@ const Search = lazy(() => import('./Pages/Search'));
 const Profile = lazy(() => import('./Pages/Profile'));
 const Signup = lazy(() => import('./Pages/Signup'));
 const Login = lazy(() => import('./Pages/Login'));
-const Reports = lazy(() => import('./pages/Reports'));
+const Reports = lazy(() => import('./Pages/Reports'));
 const NotFound = lazy(() => import('./Pages/NotFound'));
 
 function App(){
