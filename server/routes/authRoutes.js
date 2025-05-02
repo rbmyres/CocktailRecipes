@@ -72,7 +72,6 @@ router.post("/login", (req, res) => {
                     const token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
                     
                     res.cookie("token", token, { 
-                        domain: ".client-qfaf.onrender.com/",
                         httpOnly: true,
                         secure: true,
                         sameSite: "none",
