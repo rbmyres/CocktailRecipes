@@ -9,13 +9,19 @@ const ALLOWED_ORIGIN = process.env.CORS_ORIGIN;
 
 dotenv.config();
 const app = express();
-app.use(express.json());
-app.use(cookieParser());
 
 app.use(cors({
     origin: ALLOWED_ORIGIN, 
     credentials: true
 }));
+
+app.options('*', cors({
+    origin: ALLOWED_ORIGIN,
+    credentials: true
+}));
+
+app.use(express.json());
+app.use(cookieParser());
 
 const db = mysql.createConnection({
     user: process.env.DB_USER,
@@ -31,6 +37,7 @@ const followRoutes = require('./routes/followRoutes');
 const likeRoutes = require('./routes/likeRoutes');
 const postRoutes = require('./routes/postRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const { ALL } = require('dns');
 
 app.use((req, res, next) => {
     req.db = db;
