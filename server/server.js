@@ -7,13 +7,13 @@ const path = require('path');
 const port = process.env.PORT || 8080;
 const ALLOWED_ORIGIN = process.env.CORS_ORIGIN;
 
-dotenv.config();
-const app = express();
-
 app.use(cors({
     origin: ALLOWED_ORIGIN, 
     credentials: true
 }));
+
+dotenv.config();
+const app = express();
 
 app.options('*', cors({
     origin: ALLOWED_ORIGIN,
