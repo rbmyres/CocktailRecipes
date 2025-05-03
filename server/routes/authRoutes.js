@@ -70,14 +70,19 @@ router.post("/login", (req, res) => {
                 if (response) {
                     const id = result[0].user_id;
                     const token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+
+                    console.log("About to set cookie with token");
                     
                     res.cookie("token", token, { 
                         httpOnly: true,
                         secure: true,
                         sameSite: "none",
                         path: "/",
-                        maxAge: 86400000,
+                        partitioned: true,
+                        maxAge: 86400000
                     });
+
+                    console.log("Cookie headers:", res.getHeaders());
 
                     return res.json({ auth: true, message: "Login successful", user: result[0]});
                 } else {
