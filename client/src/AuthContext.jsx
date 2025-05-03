@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
 
     const checkAuth = async () => {
         try {
+            console.log("Cookies:", document.cookie);
             const response = await axios.get(`${API_URL}/auth/auth`, { withCredentials: true });
             setAuthorized(response.data.user); 
         } catch (error) {

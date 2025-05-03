@@ -75,6 +75,7 @@ router.post("/login", (req, res) => {
                         httpOnly: true,
                         secure: true,
                         sameSite: "none",
+                        path: "/",
                         maxAge: 86400000,
                     });
 
