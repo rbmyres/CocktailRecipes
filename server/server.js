@@ -3,10 +3,6 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const dotenv = require("dotenv");
 
-if (!process.env.ACCESS_TOKEN_SECRET) {
-    console.error("WARNING: ACCESS_TOKEN_SECRET environment variable is not set!");
-}
-
 const cookieParser = require("cookie-parser");
 const path = require('path');
 const port = process.env.PORT || 8080;
