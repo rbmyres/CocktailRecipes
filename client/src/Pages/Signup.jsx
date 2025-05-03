@@ -31,9 +31,7 @@ function Signup() {
         last_name: signupLastName,
         first_name: signupFirstName,
         private: signupPrivacy
-      },
-      {withCredentials: true}
-    );
+      });
       toast.success('Account created successfully!');
       setSignupStatus(response.data.message);
       if (response.status === 201) {

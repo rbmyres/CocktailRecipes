@@ -32,7 +32,7 @@ function EditPost(){
         setLocalLoading(true);
         setLoading(true);
 
-        axios.get(`${API_URL}/post/${recipe_id}`, { withCredentials: true })
+        axios.get(`${API_URL}/post/${recipe_id}`)
           .then(res => {
             const p = res.data
     
@@ -114,7 +114,7 @@ function EditPost(){
         }  
     
         try {
-          await axios.put(`${API_URL}/post/${recipe_id}`, data, { withCredentials: true })
+          await axios.put(`${API_URL}/post/${recipe_id}`, data)
             navigate(`/`)
         } catch (err) {
           console.error(err)

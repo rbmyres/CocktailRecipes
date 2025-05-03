@@ -41,7 +41,7 @@ function Reports() {
     const handleDismiss = async (report_id) => {
         setLoading(true);
         try {
-          await axios.delete(`${API_URL}/report/${report_id}`, {withCredentials: true})
+          await axios.delete(`${API_URL}/report/${report_id}`)
           setReports(reports.filter(r => r.report_id !== report_id))
         } catch (err) {
           console.error("Dismiss failed", err);

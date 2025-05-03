@@ -96,7 +96,7 @@ router.post('/create', verifyJWT, async (req, res) => {
 
 router.put('/:recipe_id', verifyJWT, async (req, res) => {
   const db = req.db;
-  const user_id = req.user_id;
+  const user_id = req.user.id;
   const recipe_id = req.params.recipe_id;
 
   const {title, primarySpirit, postType, ingredients, directions, imageURL } = req.body;

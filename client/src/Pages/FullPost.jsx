@@ -28,7 +28,7 @@ useEffect(() => {
     setLocalLoading(true);
     setLoading(true);
     
-    axios.get(`${API_URL}/post/${recipe_id}`, { withCredentials: true })
+    axios.get(`${API_URL}/post/${recipe_id}`)
       .then(res => {
         setPost(res.data);
       })
@@ -51,7 +51,7 @@ useEffect(() => {
             onClick={() => {
               toast.dismiss(t.id);
               setLoading(true);
-              axios.delete(`${API_URL}/post/delete/${recipe_id}`, { withCredentials: true })
+              axios.delete(`${API_URL}/post/delete/${recipe_id}`)
                 .then(() => {
                   toast.success('Post successfully deleted');
                   navigate('/');

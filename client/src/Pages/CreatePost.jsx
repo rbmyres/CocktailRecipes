@@ -82,7 +82,7 @@ function CreatePost(){
             imageURL
         }
         try {
-            await axios.post(`${API_URL}/post/create`, data, { withCredentials: true});
+            await axios.post(`${API_URL}/post/create`, data);
             navigate('/');
             toast.success("Post created successfully!");
         } catch (err){

@@ -18,8 +18,7 @@ function Search(){
         }
         axios
           .get(`${API_URL}/user/search`, {
-            params: { search: debouncedQuery },
-            withCredentials: true
+            params: { search: debouncedQuery }
           })
           .then(res => setUsers(res.data))
           .catch(err => console.error("User search error", err));

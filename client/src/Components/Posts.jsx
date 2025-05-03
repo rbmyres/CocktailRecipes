@@ -28,7 +28,7 @@ function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
             if (sort)           params.sort           = sort;
         }
         
-        axios.get(`${API_URL}${endpoint}`, { params, withCredentials: true })
+        axios.get(`${API_URL}${endpoint}`, { params })
             .then(res => {
                 setPosts(res.data);
             })

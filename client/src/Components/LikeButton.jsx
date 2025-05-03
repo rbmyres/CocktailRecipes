@@ -21,7 +21,7 @@ export function LikeButton({ recipe_id, initialLiked, initialCount, owner_id }) 
     if (!authorized) { navigate(`/login`)}
 
     try {
-      const {data} = await axios.post(`${API_URL}/like/${recipe_id}`, {}, {withCredentials: true})
+      const {data} = await axios.post(`${API_URL}/like/${recipe_id}`, {})
       setLiked(data.liked);
       setLikeCount(data.like_count)
     } catch (err) {

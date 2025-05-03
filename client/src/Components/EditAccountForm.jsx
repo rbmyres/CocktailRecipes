@@ -16,7 +16,7 @@ function EditAccountForm({onUpdated, onBack}) {
 
     
     useEffect(() => {
-        axios.get(`${API_URL}/user/edit/info`, {withCredentials: true})
+        axios.get(`${API_URL}/user/edit/info`)
         .then(res => {
             setEditEmail(res.data.user_email)
             setEditFirstName(res.data.first_name)
@@ -38,9 +38,7 @@ function EditAccountForm({onUpdated, onBack}) {
                     user_email: editEmail,
                     user_name: editUsername,
                     private: editPrivacy
-                },
-                {withCredentials: true}
-            );
+                });
             toast.success('Account updated successfully!');
             setEditStatus(response.data.message);
             onUpdated();

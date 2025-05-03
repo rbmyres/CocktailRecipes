@@ -55,7 +55,7 @@ export default function FileUpload({ onUpload }){
         
             const formData = new FormData();
             formData.append("recipe_image", recipeFile);
-            const { data } = await axios.post(`${API_URL}/upload/recipe_image`, formData, {withCredentials: true});
+            const { data } = await axios.post(`${API_URL}/upload/recipe_image`, formData);
 
             toast.dismiss(loadingToast);
             toast.success("Image uploaded successfully!");

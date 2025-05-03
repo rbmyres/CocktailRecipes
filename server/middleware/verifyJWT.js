@@ -1,15 +1,14 @@
 const jwt = require("jsonwebtoken");
 
 function verifyJWT(req, res, next) {
-    const token = req.cookies.token;
+    const authHeader = req.headers.authorization;
 
-    console.log("Raw header cookie:", req.headers.cookie);
-    console.log("Parsed req.cookies:", req.cookies);
-
-    if (!token) {
-        console.log("No token found");
+    if (!authHeader) {
+        console.log("No auth header found");
         return res.status(401).json({ message: "No auth token found" });
     }
+
+    const token = authHeader.split(' ')[1];
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {

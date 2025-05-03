@@ -32,10 +32,10 @@ function ProfileInfo(){
         setLocalLoading(true);
         setLoading(true);
         
-        axios.get(`${API_URL}/user/id/${ user_name }`, {withCredentials: true})
+        axios.get(`${API_URL}/user/id/${ user_name }`)
             .then(res => {
                 const userID = res.data.user_id;
-                return axios.get(`${API_URL}/user/${ userID }`, {withCredentials: true})
+                return axios.get(`${API_URL}/user/${ userID }`)
             })
             .then(res => {
                 setUser(res.data);
@@ -58,7 +58,7 @@ function ProfileInfo(){
                     onClick={() => {
                       toast.dismiss(t.id);
                       setLoading(true);
-                      axios.delete(`${API_URL}/user/delete/${user.user_id}`, { withCredentials: true })
+                      axios.delete(`${API_URL}/user/delete/${user.user_id}`)
                         .then(() => {
                           toast.success('User successfully deleted');
                           navigate('/');

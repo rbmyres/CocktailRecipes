@@ -16,7 +16,7 @@ function ChangePasswordForm({ onBack }) {
       const response = await axios.put(`${import.meta.env.VITE_API_URL}/user/change/password`, {
         current_password: currentPassword,
         new_password: newPassword
-      }, {withCredentials: true});
+      });
       toast.success('Password updated successfully!');
       setPasswordStatus(response.data.message);
     } catch (error) {

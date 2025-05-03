@@ -71,20 +71,13 @@ router.post("/login", (req, res) => {
                     const id = result[0].user_id;
                     const token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 
-                    console.log("About to set cookie with token");
-                    
-                    res.cookie("token", token, { 
-                        httpOnly: true,
-                        secure: true,
-                        sameSite: "none",
-                        path: "/",
-                        partitioned: true,
-                        maxAge: 86400000
-                    });
+                    return res.json({
+                        auth: true,
+                        message: "Login successful",
+                        user: result[0],
+                        token: token
+                    })
 
-                    console.log("Cookie headers:", res.getHeaders());
-
-                    return res.json({ auth: true, message: "Login successful", user: result[0]});
                 } else {
                     return res.status(401).send({ message: "Wrong username and/or password" });
                 }
@@ -97,7 +90,6 @@ router.post("/login", (req, res) => {
 
 // Logout
 router.post("/logout", (req, res) => {
-    res.clearCookie("token");
     res.json({ auth: false, message: "Logged out!" });
 });
 

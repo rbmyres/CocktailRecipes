@@ -20,7 +20,7 @@ function SubmitReport({recipe_id, onClose}) {
 
         setError('');
 
-        axios.post(`${API_URL}/report/${recipe_id}`, {reason, description}, {withCredentials: true})
+        axios.post(`${API_URL}/report/${recipe_id}`, {reason, description})
             .then(() => {
                 toast.success('Report submitted');
                 onClose();

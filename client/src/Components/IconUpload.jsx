@@ -55,7 +55,7 @@ export default function FileUpload({ onUpload }){
         
             const formData = new FormData();
             formData.append("user_icon", iconFile);
-            const { data } = await axios.post(`${API_URL}/upload/icon`, formData, {withCredentials: true});
+            const { data } = await axios.post(`${API_URL}/upload/icon`, formData);
 
             toast.dismiss(loadingToast);
             toast.success("Icon uploaded successfully!");
