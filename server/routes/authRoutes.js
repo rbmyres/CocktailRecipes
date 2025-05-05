@@ -6,7 +6,11 @@ const verifyJWT = require('../middleware/verifyJWT');
 const router = express.Router();
 const saltRounds = 10;
 
-// Signup
+// Query to signup
+// 1. Hash the password
+// 2. Verify the user_name and email are not taken
+// 3. Insert the new user into users
+
 router.post("/signup", (req, res) => {
     const { user_email, user_password, user_name, last_name, first_name, private} = req.body;
     const db = req.db;
@@ -50,7 +54,11 @@ router.post("/signup", (req, res) => {
     });
 });
 
-// Login
+// Query to login
+// 1. Find the user based on user_name
+// 2. Compare passwords
+// 3. If the password is verified, return an auth-header containing auth-token
+
 router.post("/login", (req, res) => {
     const { user_name, user_password } = req.body;
     const db = req.db;
@@ -88,10 +96,15 @@ router.post("/login", (req, res) => {
     });
 });
 
-// Logout
+// Removes auth-header (and therefore token)
+
 router.post("/logout", (req, res) => {
     res.json({ auth: false, message: "Logged out!" });
 });
+
+// Query to find some user information
+// Used in AuthContext to create an authorized user state
+// Frontend can use AuthContext to find the user_id, user_name, user_icon, and is_admin of the logged in user
 
 router.get("/auth", verifyJWT, (req, res) => {
     const db = req.db;  

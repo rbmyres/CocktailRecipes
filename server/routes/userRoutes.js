@@ -7,6 +7,10 @@ const saltRounds = 10;
 
 const router = express.Router();
 
+// Searches for user on search page
+// Takes input from frontend, queries db for anything matching
+// searchTerm = input from user
+
 router.get('/search', async (req, res) => {
     const db = req.db;
     const search = (req.query.search || '').trim()
@@ -31,6 +35,8 @@ router.get('/search', async (req, res) => {
 
 });
 
+// Finds user_id from user_name
+
 router.get('/id/:user_name', (req, res) => {
     const user_name = req.params.user_name;
     const db = req.db;
@@ -49,6 +55,9 @@ router.get('/id/:user_name', (req, res) => {
     )
 })
 
+// Queries to find user information based on user_id
+// Information is used to prefill text boxes when editing account info
+
 router.get('/edit/info', verifyJWT, (req, res) => {
     const user_id = req.user.id;
     const db = req.db;
@@ -63,6 +72,10 @@ router.get('/edit/info', verifyJWT, (req, res) => {
         }
     );
 });
+
+// Used to update user information when submitted
+// First checks if the username or email is taken
+// Then updates user info based on input
 
 router.put('/submit/changes', verifyJWT, (req, res) => {
     const user_id = req.user.id;
@@ -98,6 +111,10 @@ router.put('/submit/changes', verifyJWT, (req, res) => {
         }
     );
 });
+
+// Query to change user password
+// First verifies their password is correct
+// Then hashes and updates their new password
 
 router.put('/change/password', verifyJWT, (req, res) => {
     const user_id = req.user.id;
@@ -147,6 +164,8 @@ router.put('/change/password', verifyJWT, (req, res) => {
     );
 });
 
+// Query to get all user information from user_id
+
 router.get('/:user_id', (req, res) => {
     const user_id = req.params.user_id;
     const db = req.db;
@@ -175,6 +194,13 @@ router.get('/:user_id', (req, res) => {
         }
     )
 });
+
+// Query to delete a user
+// First, verify that a user is found
+// Then, increment like_count for each post they liked
+// Increment follower_count for each user they were following
+// Increment following_count for each user was following them
+// Finally, delete the user
 
 router.delete('/delete/:user_id', verifyJWT, async (req, res) => {
     const db = req.db;

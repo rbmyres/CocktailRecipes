@@ -9,6 +9,8 @@ const router = express.Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+// Set up for cloudflare storage
+
 const s3Client = new S3Client({
   region: 'auto',
   endpoint: `https://${accountID}.r2.cloudflarestorage.com`,
@@ -17,6 +19,8 @@ const s3Client = new S3Client({
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
   },
 });
+
+// Function to upload to cloudflare
 
 async function uploadToR2(file, folder = '') {
   const fileName = `${folder}/${Date.now()}-${file.originalname}`;
@@ -32,6 +36,9 @@ async function uploadToR2(file, folder = '') {
   
   return `${uploadURL}${fileName}`;
 }
+
+// Calls upload middleware to change the filename
+// Adds the filepath to the database
 
 router.post("/icon", verifyJWT, upload.single("user_icon"), async (req, res, next) => {
     if (!req.file) return res.status(400).json({ message: 'No icon provided' });
@@ -56,6 +63,9 @@ router.post("/icon", verifyJWT, upload.single("user_icon"), async (req, res, nex
         return res.status(500).json({ message: 'Error uploading image to cloud storage' });
     }
 });
+
+// Calls upload middleware to change the filename
+// Returns filepath
 
 router.post('/recipe_image', verifyJWT, upload.single('recipe_image'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'No recipe image provided' });

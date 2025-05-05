@@ -4,6 +4,15 @@ const optionalJWT = require('../middleware/optionalJWT');
 const query = require('../utils/query');
 const router  = express.Router();
 
+// Query to add a recipe/post
+// 1. Verify all information has been added
+// 2. Insert information into recipes
+// 3. Insert information into directions
+// 4. Create a loop for all ingredients:
+//      If the ingredient is new, add it to ingredients and connect it to ingredient_description
+//      If the ingredient is found, connect it to ingredient_description
+// 5. Increment post_count
+
 router.post('/create', verifyJWT, async (req, res) => {
   const db = req.db;
   const user_id = req.user.id;
@@ -93,6 +102,16 @@ router.post('/create', verifyJWT, async (req, res) => {
     res.status(500).json({ error: 'Could not create recipe' });
   }
 });
+
+// Query to update a recipe/post
+// 1. Verify all information has been added
+// 2. Delete all directions and ingredients connected to this post
+// 3. Insert information into recipes
+// 4. Insert information into directions
+// 5. Create a loop for all ingredients:
+//      If the ingredient is new, add it to ingredients and connect it to ingredient_description
+//      If the ingredient is found, connect it to ingredient_description
+// 6. Increment post_count
 
 router.put('/:recipe_id', verifyJWT, async (req, res) => {
   const db = req.db;
@@ -190,6 +209,13 @@ router.put('/:recipe_id', verifyJWT, async (req, res) => {
 
 })
 
+// Small post -- only need specific information to fill the content card
+// (Does not query for ingredients or directions)
+// Retrieves necessary post information based on filters:
+
+// On the home page, users can search/filter/sort through posts based on input, primary_spirit, time
+// Creates a variable for the sql script, and adds to the script if the user is searching, filtering, or sorting
+
 router.get('/small', optionalJWT, async (req, res) => {
   const db = req.db
   const currentUserId= req.user?.id ?? null;
@@ -235,6 +261,10 @@ router.get('/small', optionalJWT, async (req, res) => {
   }
 });
 
+// Small post -- only need specific information to fill the content card
+// (Does not query for ingredients or directions)
+// Retrieves necessary post information that the user has liked
+
 router.get('/liked', verifyJWT, async (req, res) => {
   const db = req.db;
   const user_id = req.user.id;
@@ -256,6 +286,9 @@ router.get('/liked', verifyJWT, async (req, res) => {
     res.status(500).json({error: "Could not load liked posts"});
   }
 })
+
+// Full post -- needs all recipe information
+// Get all recipe information based on recipe_id
 
 router.get('/:recipe_id', optionalJWT, async (req, res) => {
   const db = req.db;
@@ -315,6 +348,10 @@ router.get('/:recipe_id', optionalJWT, async (req, res) => {
 
   }
 });
+
+// Verify that the post exists
+// Increment post_count for the user
+// Delete post
 
 router.delete('/delete/:id', verifyJWT, async (req, res) => {
   const db = req.db;

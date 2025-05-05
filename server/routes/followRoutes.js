@@ -16,6 +16,10 @@ router.get('/check', (req, res) => {
     );
 });
 
+// Query when a user follows another user
+//      -> Insert into follower table follower_id and following_id
+// Increment follower_count and following_count
+
 router.post('/follow', (req, res) => {
     const { follower_id, following_id} = req.body;
     const db = req.db;
@@ -33,6 +37,10 @@ router.post('/follow', (req, res) => {
         }
     );
 });
+
+// Query when a user unfollows another user
+//      -> Delete from follower table follower_id and following_id
+// Increment follower_count and following_count
 
 router.post('/unfollow', (req, res) => {
     const { follower_id, following_id } = req.body;
@@ -52,6 +60,8 @@ router.post('/unfollow', (req, res) => {
     );
 });
 
+// Return a list of each user a specific user is following
+
 router.get('/followers/:user_id', (req, res) => {
     const { user_id } = req.params;
     const db = req.db;
@@ -66,6 +76,8 @@ router.get('/followers/:user_id', (req, res) => {
         }
     );
 });
+
+// Return a list of each user a specific user is followed by
 
 router.get('/following/:user_id', (req, res) => {
     const { user_id } = req.params;

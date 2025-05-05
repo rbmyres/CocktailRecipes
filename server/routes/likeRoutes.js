@@ -3,6 +3,13 @@ const verifyJWT = require('../middleware/verifyJWT');
 const query = require('../utils/query');
 const router = express.Router();
 
+// Runs everytime the user clicks on the like button
+// Checks if the user has liked the post (if row.length > 0)
+// If the user has liked the post, that means they are unliking the post
+//      -> Delete like from table and increment like_count
+// If the user has not like the post, that means they are liking the post
+//      -> Insert like into table and increment like_count
+// Finally, return the new like count for this recipe so that it updates each click
 
 router.post('/:recipe_id', verifyJWT, async (req, res) => {
     const db = req.db;
@@ -70,6 +77,8 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
         return res.status(500).json({ error: 'Error updating likes'});
     }
 });
+
+// Returns the list of users who like a specific post
 
 router.get('/list/:recipe_id', (req, res) => {
     const { recipe_id } = req.params;

@@ -3,6 +3,10 @@ const verifyJWT = require('../middleware/verifyJWT');
 const query = require('../utils/query');
 const router = express.Router();
 
+// Query to create a report for a certain recipe
+// First, verify that the user has not reported this post
+// Then, add the report
+
 router.post('/:recipe_id', verifyJWT, async (req, res) => {
     const db = req.db;
     const user_id = req.user.id;
@@ -38,6 +42,8 @@ router.post('/:recipe_id', verifyJWT, async (req, res) => {
     
 });
 
+// Query to retrieve all report information
+
 router.get('/reports', async (req, res) => {
       try {
         const sql = `
@@ -58,6 +64,8 @@ router.get('/reports', async (req, res) => {
     }
   );
 
+  // Query to delete a report
+  
   router.delete('/:report_id', verifyJWT, async (req, res) => {
     const db         = req.db;
     const report_id   = parseInt(req.params.report_id, 10);

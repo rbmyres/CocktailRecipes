@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 
+// Optional JWT verificaiton
+// Used for home page which both authorized and general users can access
+
 function optionalJWT(req, res, next) {
     const authHeader = req.headers.authorization;
 
