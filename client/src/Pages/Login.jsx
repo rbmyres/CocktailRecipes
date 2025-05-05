@@ -19,6 +19,8 @@ function Login() {
 
   if (authLoading) return null;
 
+  // Logs in user through AuthContext
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);

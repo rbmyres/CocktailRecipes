@@ -12,6 +12,8 @@ function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
     const { authorized } = useAuth();
     const { setLoading } = useLoading();
 
+    // Maps each post to a small post
+
     useEffect(() => {
         setLocalLoading(true);
         setLoading(true);

@@ -4,6 +4,9 @@ import LoadingSpinner from "./Components/LoadingSpinner";
 
 const LoadingContext = createContext();
 
+// Uses axios.interceptors.request to set global loading state
+// Automatically loads spinner during each axios request
+
 export const LoadingProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 

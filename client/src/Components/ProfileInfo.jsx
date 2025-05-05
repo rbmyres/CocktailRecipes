@@ -28,6 +28,9 @@ function ProfileInfo(){
     const [profileListOpen, setProfileListOpen] = useState(false);
     const [listType, setListType] = useState("");
 
+    // First, fetches user_id from user_name (param)
+    // Then, fetches all required user information with user_id
+
     const fetchProfile = () => {
         setLocalLoading(true);
         setLoading(true);
@@ -49,6 +52,8 @@ function ProfileInfo(){
             });
         }
 
+        // Sends request to delete user
+        
         const handleDelete = () => {
             toast((t) => (
               <div>

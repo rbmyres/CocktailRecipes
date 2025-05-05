@@ -1,3 +1,6 @@
+// Image cropper tool to create a new image 
+// Creates a new image based on the cropper dimensions
+
 export default function getCroppedImage(image, canvas, crop, fileName){
     return new Promise((resolve, reject) => {
         const ctx = canvas.getContext("2d");

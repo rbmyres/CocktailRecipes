@@ -16,6 +16,7 @@ function PostSmall({recipe_id, recipe_title, user_name, user_icon, recipe_image,
 
   const isOwner = authorized?.user_id === owner_id;
 
+  // Component for each individual small post (content card)
   return (
         <div className="previewContainer">
           <div className='previewHeader'>

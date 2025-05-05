@@ -8,6 +8,10 @@ import LoadingSpinner from "./Components/LoadingSpinner";
 import { LoadingProvider } from "./LoadingContext";
 import { Toaster } from 'react-hot-toast';
 
+// Wrap all pages with lazy 
+// Components are only loaded when needed, not a render. 
+// Long list of posts would load all at once, but instead load as you scroll
+
 const Home = lazy(() => import('./Pages/Home'));
 const FullPost = lazy(() => import('./Pages/FullPost'));
 const CreatePost = lazy(() => import('./Pages/CreatePost'));

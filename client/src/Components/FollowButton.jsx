@@ -5,6 +5,8 @@ function FollowButton({ followerUserID, followingUserID, setUser }) {
     const API_URL = import.meta.env.VITE_API_URL;
     const [isFollowing, setIsFollowing] = useState(false);
 
+    // Fetches whether the user is following or not following a user
+
     useEffect(() => {
 
         axios.get(`${API_URL}/follow/check`, {
@@ -17,6 +19,8 @@ function FollowButton({ followerUserID, followingUserID, setUser }) {
             console.error(err);
         })
     }, [followerUserID, followingUserID]);
+
+    // Toggles the follow button to update automatically
 
     const toggleFollowButton = () => {
         const routeEndPoint = isFollowing ? "unfollow" : "follow";

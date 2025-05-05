@@ -10,6 +10,8 @@ function ChangePasswordForm({ onBack }) {
   const [newPassword, setNewPassword] = useState("");
   const [passwordStatus, setPasswordStatus] = useState("");
 
+  // Sends request to change password
+
   const handleChange = async (e) => {
     e.preventDefault();
     try {

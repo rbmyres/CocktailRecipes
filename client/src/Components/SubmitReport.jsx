@@ -4,13 +4,14 @@ import { useAuth } from '../AuthContext';
 import toast from 'react-hot-toast';
 
 function SubmitReport({recipe_id, onClose}) {
-    console.log('SubmitReport mounted for recipe', recipe_id);
     const { authorized } = useAuth();
     const API_URL = import.meta.env.VITE_API_URL;
 
     const [reason, setReason] = useState('');
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
+
+    // Sends request to create a new report
 
     const handleSubmit = async () => {
         if (!reason) {

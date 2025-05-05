@@ -15,6 +15,8 @@ function Reports() {
     const [localLoading, setLocalLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Render all reports on load
+
     useEffect(() => {
         if (!authorized?.is_admin) {
           return navigate('/notfound');
@@ -38,6 +40,8 @@ function Reports() {
       }, [API_URL, authorized, navigate, setLoading]);
     
 
+    // Request to delete report when dismissed
+    
     const handleDismiss = async (report_id) => {
         setLoading(true);
         try {

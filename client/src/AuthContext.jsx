@@ -4,6 +4,8 @@ import axios from "axios";
 const AuthContext = createContext();
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Set auth-header with token
+
 const setToken = (token) => {
     if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -27,6 +29,9 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    // Retuns the user's information if authorized
+    // Allows easy access to user_id, user_name, user_icon, is_admin of user that is currently logged in
+
     const checkAuth = async () => {
         try {
             const response = await axios.get(`${API_URL}/auth/auth`);
@@ -39,6 +44,8 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+    // Logs the user in and sets token
 
     const login = async (credentials) => {
         try {
@@ -55,6 +62,8 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    // Logs the user out and removes token
+    
     const logout = async () => {
         try {
             await axios.post(`${API_URL}/auth/logout`);

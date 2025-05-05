@@ -14,7 +14,8 @@ function EditAccountForm({onUpdated, onBack}) {
     const [editPrivacy, setEditPrivacy] = useState('');
     const [editStatus, setEditStatus] = useState('');
 
-    
+    // Fetches previous user information on load
+
     useEffect(() => {
         axios.get(`${API_URL}/user/edit/info`)
         .then(res => {
@@ -29,6 +30,8 @@ function EditAccountForm({onUpdated, onBack}) {
         })
     }, []);
 
+    // Submits changes to user information
+    
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {

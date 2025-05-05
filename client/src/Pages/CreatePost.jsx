@@ -69,6 +69,8 @@ function CreatePost(){
         setPreviewModalOpen(true);
     }
 
+    // Sends request to create new recipe
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);

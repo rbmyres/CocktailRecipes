@@ -19,6 +19,10 @@ function Signup() {
   const [signupPrivacy, setSignupPrivacy] = useState('');
   const [signupStatus, setSignupStatus] = useState('');
 
+  // First, create a new user based on user input
+  // Then, await login to automatically login after signup
+  // Navigate to the profile page of the new user
+  
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);

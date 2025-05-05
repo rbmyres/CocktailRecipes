@@ -26,6 +26,8 @@ function EditPost(){
     const [previewModalOpen, setPreviewModalOpen] = useState(false);
     const [localLoading, setLocalLoading] = useState(true);
 
+    // Fetches previous post information to prefill text boxes
+
     useEffect(() => {
         if (!authorized?.user_id) return;
         
@@ -98,6 +100,8 @@ function EditPost(){
         setError('');
         setPreviewModalOpen(true);
     }
+
+    // Sends request to update recipe
 
     const handleSubmit = async (e) => {
         e.preventDefault()

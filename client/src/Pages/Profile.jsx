@@ -23,6 +23,9 @@ function Profile() {
 
   if (!authorized) { return <Login /> }
 
+  // First, find user_id from user_name (param)
+  // Then, fetch required user information
+  
   const fetchProfile = () => {
     setLocalLoading(true);
     setLoading(true);

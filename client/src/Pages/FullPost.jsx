@@ -24,6 +24,8 @@ const [error, setError] = useState('');
 
 const timeAgo = useTimeAgo(post?.post_time);
 
+// Fetch all post information from recipe_id (param)
+
 useEffect(() => {
     setLocalLoading(true);
     setLoading(true);

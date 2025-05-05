@@ -7,6 +7,9 @@ function ProfileList({open, type, userID, onClose, recipe_id}) {
   const API_URL = import.meta.env.VITE_API_URL;
   const [users, setUsers] = useState([]);
 
+  // Fetches a list of users based on endpoint
+  // Can fetch the list of followers, following, or likes
+
   useEffect(() => {
     if (!open) return;
 

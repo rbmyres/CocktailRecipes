@@ -17,6 +17,8 @@ export function LikeButton({ recipe_id, initialLiked, initialCount, owner_id }) 
   const [listType, setListType] = useState("");
     
 
+  // Checks whether or not the user has liked this post
+  
   const toggleLike = async () => {
     if (!authorized) { navigate(`/login`)}
 

@@ -11,6 +11,9 @@ function Search(){
     const [users, setUsers] = useState([]);
     const debouncedQuery = useDebounce(search, 300);
 
+    // Sends request for all users with user_name LIKE user input
+    // Uses debounced search to decrease requests
+
     useEffect(() => {
         if (!debouncedQuery.trim()) {
           setUsers([]);

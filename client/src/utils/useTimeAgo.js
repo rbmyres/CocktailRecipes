@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 
+// Turns timestamp into more readable text
+
 export function useTimeAgo(timestamp) {
   const [label, setLabel] = useState('')
 

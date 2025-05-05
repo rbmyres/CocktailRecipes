@@ -8,6 +8,8 @@ function PostPreview({recipe_title, user_name, user_icon, recipe_image, like_cou
 
   const API_URL = import.meta.env.VITE_API_URL;
 
+  // Displays a small post before submitting a new post
+
   return (
         <div className="previewContainer">
 

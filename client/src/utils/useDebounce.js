@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 
-export function useDebounce(value, delay = 300) {
+// Adds small delay between user input and query
+
+export function useDebounce(value, delay = 500) {
   const [debounced, setDebounced] = useState(value);
 
   useEffect(() => {
