@@ -13,7 +13,9 @@ export const LoadingProvider = ({ children }) => {
   useEffect(() => {
     const reqInterceptor = axios.interceptors.request.use(
       config => {
-        setLoading(true);
+        if (!config.headers['x-no-loading']){
+          setLoading(true);
+        }
         return config;
       },
       error => {
@@ -24,7 +26,9 @@ export const LoadingProvider = ({ children }) => {
 
     const resInterceptor = axios.interceptors.response.use(
       response => {
-        setLoading(false);
+        if (!response.config.headers['x-no-loading']) {
+          setLoading(false);
+        }
         return response;
       },
       error => {

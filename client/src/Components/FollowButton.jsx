@@ -28,7 +28,8 @@ function FollowButton({ followerUserID, followingUserID, setUser }) {
         axios.post(`${API_URL}/follow/${routeEndPoint}`, {
             follower_id: followerUserID,
             following_id: followingUserID
-        })
+        },
+            {headers: {'x-no-loading': true}})
         .then(() => {
             setIsFollowing(prev => !prev)
 
