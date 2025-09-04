@@ -102,8 +102,8 @@ function ProfileInfo(){
                             className="profileIcon" 
                             src={user.user_icon} 
                             alt={`${user.user_name}'s icon`} 
-                            width={128} 
-                            height={128}
+                            width={180} 
+                            height={180}
                             priority={true}
                         />
                         <div className='changeIconDiv' onClick={() => setIconModalOpen(true)}>
@@ -166,8 +166,8 @@ function ProfileInfo(){
                             className="profileIcon" 
                             src={user.user_icon} 
                             alt={`${user.user_name}'s icon`} 
-                            width={128} 
-                            height={128}
+                            width={180} 
+                            height={180}
                             priority={true}
                         />
                     </div>
