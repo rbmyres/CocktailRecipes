@@ -169,5 +169,5 @@ This project is licensed under the MIT License.
 ## 👤 Author
 
 **[Your Name]**
-- GitHub: [@yourusername](https://github.com/rbmyres)
-- LinkedIn: [Your Name](https://linkedin.com/in/reese-myres)
+- GitHub: [@rbmyres](https://github.com/rbmyres)
+- LinkedIn: [Reese Myres](https://linkedin.com/in/reese-myres)
