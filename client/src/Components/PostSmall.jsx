@@ -25,8 +25,8 @@ function PostSmall({recipe_id, recipe_title, user_name, user_icon, recipe_image,
               className="previewUserIcon" 
               src={user_icon} 
               alt={`${user_name}'s icon`} 
-              width={50} 
-              height={50}
+              width={44} 
+              height={44}
               priority={true}
             />
             <Link className='previewUserName'to={`/profile/${user_name}`}>{user_name}</Link>

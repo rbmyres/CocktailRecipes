@@ -179,14 +179,26 @@
 }
 
 .previewUserIcon-wrapper {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
+    display: inline-block;
+    margin: .4em .6em .4em .6em;
+    border: 1px solid #E5E5E5;
 }
 
 .previewImage-wrapper {
     width: 100%;
     border-radius: 8px;
+}
+
+.postUserIcon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: .4em .8em .4em .6em;
+    border: 1px solid #E5E5E5;
 }
 
 .profileIcon-wrapper {
