@@ -164,6 +164,38 @@ router.put('/change/password', verifyJWT, (req, res) => {
     );
 });
 
+// Combined endpoint to get user profile by username in single request
+// Eliminates the need for sequential API calls on profile page
+
+router.get('/profile/:user_name', (req, res) => {
+    const user_name = req.params.user_name;
+    const db = req.db;
+
+    db.query(
+        "SELECT user_id, user_name, first_name, last_name, user_icon, post_count, follower_count, following_count FROM users WHERE user_name = ?",
+        [user_name],
+        (err, result) => {
+            if (err){
+                return res.status(500).json({ message: "Server error"});
+            }
+            if (result.length === 0) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            const user = result[0];
+            return res.json({
+                user_id: user.user_id,
+                user_name: user.user_name,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                user_icon: user.user_icon,
+                post_count: user.post_count,
+                follower_count: user.follower_count,
+                following_count: user.following_count
+            })
+        }
+    )
+});
+
 // Query to get all user information from user_id
 
 router.get('/:user_id', (req, res) => {

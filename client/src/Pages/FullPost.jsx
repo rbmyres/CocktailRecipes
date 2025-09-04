@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useTimeAgo } from '../utils/useTimeAgo';
 import { LikeButton } from '../Components/LikeButton';
 import { ReportButton } from '../Components/ReportButton';
+import ImageLoader from '../Components/ImageLoader';
 import { FaPencilAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -92,12 +93,26 @@ const isOwner = authorized?.user_id === post.owner_id;
     <div className='postContainer'>
 
       <div className='postHeader'>
-        <img className='postUserIcon' src={post.user_icon} alt={`${post.user_name}'s icon`} width={128} height={128} />
+        <ImageLoader 
+          className='postUserIcon' 
+          src={post.user_icon} 
+          alt={`${post.user_name}'s icon`} 
+          width={50} 
+          height={50}
+          priority={true}
+        />
         <Link className='postUserName'to={`/profile/${post.user_name}`}>{post.user_name}</Link>
         <div className='postTime'>{timeAgo}</div>
       </div>
 
-      <img className="postImage" src={post.recipe_image} alt={`image of ${post.recipe_title}`} />
+      <ImageLoader 
+        className="postImage" 
+        src={post.recipe_image} 
+        alt={`image of ${post.recipe_title}`}
+        width="100%"
+        height="400"
+        priority={true}
+      />
       
       <div className='postFooter'>
         <h3 className='postTitle'>{post.recipe_title}</h3>

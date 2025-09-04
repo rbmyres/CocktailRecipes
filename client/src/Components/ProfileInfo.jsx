@@ -9,6 +9,8 @@ import SmallModal from './SmallModal';
 import Settings from './Settings';
 import FollowButton from './FollowButton';
 import ProfileList from './ProfileList';
+import ProfileSkeleton from './Skeletons/ProfileSkeleton';
+import ImageLoader from './ImageLoader';
 import { FaPencilAlt } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
 import toast from 'react-hot-toast';
@@ -28,18 +30,13 @@ function ProfileInfo(){
     const [profileListOpen, setProfileListOpen] = useState(false);
     const [listType, setListType] = useState("");
 
-    // First, fetches user_id from user_name (param)
-    // Then, fetches all required user information with user_id
+    // Fetches all required user information with user_name in single request
 
     const fetchProfile = () => {
         setLocalLoading(true);
         setLoading(true);
         
-        axios.get(`${API_URL}/user/id/${ user_name }`)
-            .then(res => {
-                const userID = res.data.user_id;
-                return axios.get(`${API_URL}/user/${ userID }`)
-            })
+        axios.get(`${API_URL}/user/profile/${ user_name }`)
             .then(res => {
                 setUser(res.data);
             })
@@ -93,15 +90,22 @@ function ProfileInfo(){
         fetchProfile();
     }, [user_name]); 
 
-    if (localLoading) return null;
-    if (!user) return <p>Loading...</p>;
+    if (localLoading) return <ProfileSkeleton />;
+    if (!user) return <p>User not found</p>;
     return (
         <>
             { authorized.user_id === user.user_id ? (
                 <>
                 <div className="profileInfoContainer">
                     <div className='profileIconDiv'>
-                        <img className="profileIcon" src={user.user_icon} alt={`${user.user_name}'s icon`} width={128} height={128}/>
+                        <ImageLoader 
+                            className="profileIcon" 
+                            src={user.user_icon} 
+                            alt={`${user.user_name}'s icon`} 
+                            width={128} 
+                            height={128}
+                            priority={true}
+                        />
                         <div className='changeIconDiv' onClick={() => setIconModalOpen(true)}>
                             <FaPencilAlt className='profilePencil'></FaPencilAlt>
                         </div>
@@ -158,7 +162,14 @@ function ProfileInfo(){
                 <>
                 <div className="profileInfoContainer">
                     <div className='profileIconDiv'>
-                        <img className="profileIcon" src={user.user_icon} alt={`${user.user_name}'s icon`} width={128} height={128}/>
+                        <ImageLoader 
+                            className="profileIcon" 
+                            src={user.user_icon} 
+                            alt={`${user.user_name}'s icon`} 
+                            width={128} 
+                            height={128}
+                            priority={true}
+                        />
                     </div>
 
                     <div className="username"> { user.user_name}</div>

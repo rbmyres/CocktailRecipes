@@ -21,20 +21,13 @@ function Profile() {
   const [liked, setLiked] = useState(false);
   const [localLoading, setLocalLoading] = useState(true);
 
-  if (!authorized) { return <Login /> }
-
-  // First, find user_id from user_name (param)
-  // Then, fetch required user information
+  // Fetch required user information with user_name in single request
   
   const fetchProfile = () => {
     setLocalLoading(true);
     setLoading(true);
     
-    axios.get(`${API_URL}/user/id/${ user_name }`)
-        .then(res => {
-            const userID = res.data.user_id;
-            return axios.get(`${API_URL}/user/${ userID }`)
-        })
+    axios.get(`${API_URL}/user/profile/${ user_name }`)
         .then(res => {
             setUser(res.data);
         })
@@ -49,7 +42,9 @@ function Profile() {
 
     useEffect(() => {
         fetchProfile();
-    }, [user_name]); 
+    }, [user_name]);
+
+    if (!authorized) { return <Login /> } 
 
     if (localLoading) return null;
     if (!user) return <p>No user found</p>;

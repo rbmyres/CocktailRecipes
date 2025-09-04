@@ -6,6 +6,7 @@ import { ReportButton } from './ReportButton';
 import { FaPencilAlt } from "react-icons/fa";
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
+import ImageLoader from './ImageLoader';
 
 
 function PostSmall({recipe_id, recipe_title, user_name, user_icon, recipe_image, like_count, post_time, owner_id, liked}) {
@@ -20,13 +21,26 @@ function PostSmall({recipe_id, recipe_title, user_name, user_icon, recipe_image,
   return (
         <div className="previewContainer">
           <div className='previewHeader'>
-            <img className="previewUserIcon" src={user_icon} alt={`${user_name}'s icon`} width={128} height={128}/>
+            <ImageLoader 
+              className="previewUserIcon" 
+              src={user_icon} 
+              alt={`${user_name}'s icon`} 
+              width={50} 
+              height={50}
+              priority={true}
+            />
             <Link className='previewUserName'to={`/profile/${user_name}`}>{user_name}</Link>
             <div className='previewTime'>{timeAgo}</div>
           </div>
 
           <Link to={`/post/${recipe_id}`} className='previewBody'>
-              <img className="previewImage" src={recipe_image} alt={`image of ${recipe_title}`} />
+              <ImageLoader 
+                className="previewImage" 
+                src={recipe_image} 
+                alt={`image of ${recipe_title}`}
+                width="100%"
+                height="300"
+              />
               <h3 className='previewTitle'>{recipe_title}</h3>
             </Link>
 

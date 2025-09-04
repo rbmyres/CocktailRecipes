@@ -3,6 +3,7 @@ import axios from 'axios';
 import PostSmall from './PostSmall';
 import { useAuth } from "../AuthContext";
 import { useLoading } from "../LoadingContext";
+import PostSkeleton from './Skeletons/PostSkeleton';
 
 function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
     const API_URL = import.meta.env.VITE_API_URL;
@@ -45,7 +46,11 @@ function Posts({ user_id, post_type, primary_spirit, liked, search, sort }) {
     
     return (
         <div className="feed">
-            {!localLoading && (
+            {localLoading ? (
+                Array.from({ length: 6 }).map((_, index) => (
+                    <PostSkeleton key={index} />
+                ))
+            ) : (
                 posts.length === 0 ? (
                     <p>No posts yet!</p>
                 ) : (
