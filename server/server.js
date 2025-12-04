@@ -2,12 +2,13 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const dotenv = require("dotenv");
-
 const path = require('path');
+
+dotenv.config();
+
 const port = process.env.PORT || 8080;
 const ALLOWED_ORIGIN = process.env.CORS_ORIGIN;
 
-dotenv.config();
 const app = express();
 
 app.set('trust proxy', 1);
