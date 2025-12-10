@@ -149,7 +149,7 @@ CocktailRecipes/
 - `POST /like/:recipe_id` - Like recipe
 - `DELETE /like/:recipe_id` - Unlike recipe
 
-## 💾 Database Schema
+## Database Schema
 
 The application uses MySQL with the following main tables:
 - `users` - User accounts and profiles
@@ -160,11 +160,11 @@ The application uses MySQL with the following main tables:
 - `follow` - User follow relationships
 - `reports` - Content reports for moderation
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License.
 
-## 👤 Author
+## Author
 
 - GitHub: [@rbmyres](https://github.com/rbmyres)
 - LinkedIn: [Reese Myres](https://linkedin.com/in/reese-myres)
