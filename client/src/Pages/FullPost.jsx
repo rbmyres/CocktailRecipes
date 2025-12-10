@@ -105,12 +105,10 @@ const isOwner = authorized?.user_id === post.owner_id;
         <div className='postTime'>{timeAgo}</div>
       </div>
 
-      <ImageLoader 
-        className="postImage" 
-        src={post.recipe_image} 
+      <ImageLoader
+        className="postImage"
+        src={post.recipe_image}
         alt={`image of ${post.recipe_title}`}
-        width="100%"
-        height="400"
         priority={true}
       />
       
