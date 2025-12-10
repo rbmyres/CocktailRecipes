@@ -1,4 +1,4 @@
-# CocktailRecipes
+# Mixer
 
 A full-stack social platform for sharing and discovering cocktail recipes. Users can create, share, and explore cocktail recipes with a modern, responsive interface.
 
