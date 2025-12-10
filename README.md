@@ -2,19 +2,19 @@
 
 A full-stack social platform for sharing and discovering cocktail recipes. Users can create, share, and explore cocktail recipes with a modern, responsive interface.
 
-## 🔗 Live Demo
+## Live Demo
 
-**[View Live Application](https://client-qfaf.onrender.com/)**
+**[View Live Application](https://mixer.rbmyres.com/)**
 
-## 🛠 Tech Stack
+## Tech Stack
 
-**Frontend:** React, Sass, Vite, Axios  
+**Frontend:** React, Sass, Vite 
 **Backend:** Node.js, Express.js, MySQL  
-**Cloud Storage:** AWS S3  
+**Cloud Storage:** Cloudflare R2 
 **Authentication:** JWT  
-**Deployment:** Render
+**Deployment:** AWS Lightsail VPS
 
-## ✨ Features
+## Features
 
 - **User Authentication**: Secure signup/login with JWT tokens
 - **Recipe Management**: Create, edit, and delete cocktail recipes with images
@@ -25,7 +25,7 @@ A full-stack social platform for sharing and discovering cocktail recipes. Users
 - **Admin Dashboard**: Content moderation and user management
 - **Responsive Design**: Fully optimized for all screen sizes
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -67,10 +67,8 @@ A full-stack social platform for sharing and discovering cocktail recipes. Users
    DB_PASSWORD=your_db_password
    DB_DATABASE=cocktail_db
    ACCESS_TOKEN_SECRET=your_jwt_secret
-   AWS_ACCESS_KEY_ID=your_aws_key
-   AWS_SECRET_ACCESS_KEY=your_aws_secret
-   AWS_BUCKET_NAME=your_bucket_name
-   AWS_REGION=your_region
+   AWS_ACCESS_KEY_ID=your_r2_key
+   AWS_SECRET_ACCESS_KEY=your_r2_secret
    CORS_ORIGIN=http://localhost:5173
    ```
    
